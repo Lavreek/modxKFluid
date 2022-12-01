@@ -1,0 +1,152 @@
+@media (max-width: 1440px) {
+    .container-header {
+        background: #E2E2E2;
+    }
+}
+
+.container {
+    margin-top: 1em;
+}
+
+.contacts-body {
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.cbody-map iframe {
+    min-width: 400px;
+    min-height: 400px;
+}
+
+.cbody-info {
+    text-align: left;
+}
+
+.info-title {
+    font-weight: 700!important;
+    margin-bottom: 1em;
+}
+
+.info-text {
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 13px;
+    line-height: 25px;
+    color: black;
+}
+
+.text-mail, .text-phone {
+    text-decoration: none;
+    color: black;
+}
+
+.text-phone::before {
+    content: "Телефон: ";
+}
+
+.text-mail::before {
+    content: "Email: ";
+}
+@media (min-width: 541px) {
+    .contacts-body {
+        display: grid!important;
+        grid-template-columns: repeat(2, 1fr);
+        grid-gap: 30px;
+    }
+}
+
+@media (min-width: 426px) {
+    .info-title:before {
+        font-size: 20px!important;
+        content: "Компания КФлюид";
+    }
+}
+
+@media (max-width: 768px){
+    .cbody-map iframe {
+        width: 330px;
+        height: 270px;
+
+        min-width: 330px;
+        max-width: 330px;
+
+        min-height: 270px;
+        max-height: 270px;
+    }
+}
+
+@media (max-width: 541px) {
+    .cbody-map {
+        margin-bottom: 2em;
+    }
+}
+
+@media screen and (max-width: 426px) {
+    .page-title {
+        margin-bottom: 2em;
+    }
+
+    .info-title:before {
+        content: "Компания КФлюид";
+        font-width: 700;
+    }
+
+    .info-text {
+        font-weight: 500;
+        font-size: 16px;
+        line-height: 23px;
+    }
+
+    .cbody-map {
+        order: 2;
+        margin-bottom: 2em;
+    }
+
+    .cbody-map iframe {
+        width: 375px;
+        height: 295px;
+
+        min-width: 375px;
+        max-width: 375px;
+
+        min-height: 295px;
+        max-height: 295px;
+    }
+}
+
+@media screen and (max-width: 376px) {
+    .cbody-map {
+        margin-bottom: 1em;
+    }
+
+    .cbody-map iframe {
+        width: 330px;
+        height: 250px;
+
+        min-width: 330px;
+        max-width: 330px;
+
+        min-height: 250px;
+        max-height: 250px;
+    }
+}
+
+@media screen and (max-width: 321px) {
+    .cbody-info {
+        padding: 0 .75rem;
+    }
+    .cbody-map iframe {
+        width: 275px;
+        height: 200px;
+
+        min-width: 275px;
+        max-width: 275px;
+
+        min-height: 200px;
+        max-height: 200px;
+    }
+}

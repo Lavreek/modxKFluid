@@ -1,0 +1,303 @@
+@media (min-width: 1141px) {
+    .production-preview {
+        grid-gap: 4em;
+    }
+
+    .production-focus {
+        display: flex;
+    }
+    .production-focus .production-header {
+        padding: 0 40px;
+        color: white;
+    }
+    .production-info .production-header {
+        display: none;
+    }
+}
+
+@media (max-width: 1141px) {
+    .production-preview {
+        grid-gap: 1em;
+    }
+
+    .production-image img {
+        width: 100%;
+    }
+
+    .production-focus {
+        display: block;
+    }
+
+    .production-focus .production-header {
+        display: none;
+    }
+}
+
+@media (max-width: 961px) {
+    .production-header {
+        color: white;
+        padding: 0 66px;
+    }
+
+    .production-info .production-header {
+        display: none;
+    }
+}
+
+@media (max-width: 541px) {
+    .production-preview {
+        display: flex!important;
+        flex-direction: column;
+    }
+
+    .production-header {
+        color: black;
+        margin: 1em 0;
+    }
+
+    .production-focus .production-header {
+        display: block;
+        padding: 0;
+    }
+
+    .production-focus {
+        background: 0!important;
+        display: flex;
+        flex-direction: column!important;
+    }
+
+    .production-image img {
+        width: 100%;
+    }
+
+    .container-partners .carousel-inner .active {
+        grid-template-columns: repeat(1, 100%) !important;
+
+    }
+    .partners-layout img {
+        max-width: 500px;
+    }
+
+    .container-partners .carousel-inner .active,
+    .container-partners .carousel-item-next,
+    .container-partners .carousel-item-prev {
+        grid-template-columns: repeat(1, 100%) !important;
+    }
+
+    .container-partners .carousel-inner .active {
+        grid-template-columns: repeat(1, 100%) !important;
+    }
+}
+
+.container-productions {
+    width: 100%;
+    margin-top: 1em;
+    display: flex;
+    flex-direction: column;
+    grid-gap: 84px;
+}
+
+.production-preview {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    justify-content: center;
+    align-items: center;
+}
+
+.production-focus {
+    justify-content: end;
+    align-items: center;
+    flex-direction: row;
+
+    background: #484848;
+}
+
+.production-header {
+    font-weight: 700;
+    font-size: 20px;
+    line-height: 24px;
+    text-transform: uppercase;
+}
+
+.production-description {
+    font-weight: 400;
+    font-size: 18px;
+    line-height: 25px;
+
+    color: #000000;
+    padding-right: 15%;
+}
+
+.container-partners .carousel-inner .active,
+.container-partners .carousel-item-next,
+.container-partners .carousel-item-prev {
+    display: grid!important;
+    grid-template-columns: repeat(3, 1fr);
+
+}
+
+.container-partners .carousel-inner .active {
+    display: grid!important;
+    grid-template-columns: repeat(3, 1fr);
+
+}
+
+.partners-layout {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/*NEW*/
+
+#preview {
+    margin-top: 10px;
+    margin-bottom: 1.5em;
+}
+
+#preview .carousel-item img {
+    max-width: 100vw;
+}
+
+@media (max-width: 768px) {
+    #preview .carousel-item img {
+        object-fit: cover;
+        max-width: unset;
+        width: 100%;
+    }
+}
+
+.preview-layout img {
+    min-height: auto;
+    max-height: none;
+}
+
+.carousel-control-next, .carousel-control-prev {
+    background: rgba(0, 0, 0, 1);
+    filter: invert(100%);
+}
+
+.carousel-indicators .active {
+    filter: none!important;
+}
+
+.carousel:hover .carousel-control-prev, .carousel:hover .carousel-control-next {
+    background: rgba(0, 0, 0, 1)!important;
+}
+
+.carousel-indicators button {
+    filter: invert(1);
+    border-top: 0px solid transparent!important;
+    border-bottom: 4px solid transparent!important;
+}
+
+
+@media screen and (max-width: 1920px) {
+
+}
+@media screen and (max-width: 1441px) {
+    .preview-layout img {
+        max-height: 400px;
+    }
+}
+
+@media screen and (max-width: 1141px) {
+    .preview-layout img {
+        max-height: 350px;
+    }
+}
+
+@media screen and (max-width: 721px) {
+    .preview-layout img {
+        min-height: 260px;
+        max-height: 260px;
+    }
+
+    .container-partners .carousel-inner .active,
+    .container-partners .carousel-item-next,
+    .container-partners .carousel-item-prev {
+        grid-template-columns: repeat(2, 50%) !important;
+    }
+    .partners-layout img {
+        max-width: 192px;
+        min-height: 0;
+    }
+
+    .carousel-control-prev, .carousel-control-next {
+        width: 6%!important;
+    }
+}
+
+@media screen and (max-width: 541px) {
+    .preview-layout img {
+        min-height: 240px;
+        max-height: 240px;
+    }
+
+    .carousel-control-prev, .carousel-control-next {
+        background: rgba(0, 0, 0, 1);
+        width: 8%!important;
+    }
+
+    .container-partners .carousel-inner .active,
+    .container-partners .carousel-item-next,
+    .container-partners .carousel-item-prev {
+        grid-template-columns: repeat(1, 100%) !important;
+    }
+
+    .carousel-indicators button {
+        display: none;
+    }
+}
+
+@media screen and (max-width: 426px) {
+    .preview-layout img {
+        min-height: 210px;
+        max-height: 210px;
+    }
+
+    .partners-layout img {
+        max-width: 386px;
+    }
+
+    .carousel-control-prev, .carousel-control-next {
+        background: rgba(0, 0, 0, 1);
+        width: 8%!important;
+    }
+
+    .carousel-indicators button {
+        display: none;
+    }
+}
+
+@media screen and (max-width: 376px) {
+    .preview-layout img {
+        min-height: 210px;
+        max-height: 210px;
+    }
+
+    .carousel-control-prev, .carousel-control-next {
+        background: rgba(0, 0, 0, 1);
+        width: 8%!important;
+    }
+
+    .carousel-indicators button {
+        display: none;
+    }
+}
+
+@media screen and (max-width: 321px) {
+    .preview-layout img {
+        min-height: 170px;
+        max-height: 170px;
+    }
+
+    .carousel-control-prev, .carousel-control-next {
+        width: 14%!important;
+    }
+
+    .partners-layout img {
+        max-width: 220px;
+        min-height: 0;
+    }
+}

@@ -1,0 +1,47 @@
+@media (max-width: 1920px) {
+    .product-text {
+        padding-left: 5.1vw !important;
+        padding-right: 5.1vw !important;
+    }
+}
+
+@media (max-width: 1440px) {
+    .product-text {
+        padding-left: 5.1vw !important;
+        padding-right: 5.1vw !important;
+    }
+}
+@media (max-width: 1280px) {
+    .product-text {
+        padding-left: 8.59vw !important;
+        padding-right: 8.59vw !important;
+    }
+}
+
+@media (max-width: 1024px) {
+    .product-text {
+        padding-left: 5vw !important;
+        padding-right: 5vw !important;
+    }
+}
+
+@media (max-width: 768px) {
+    .product-text {
+        padding-left: 5.4vw !important;
+        padding-right: 5.4vw !important;
+    }
+}
+
+@media (max-width: 576px) {
+    .product-text {
+        padding-left: 4.16vw !important;
+        padding-right: 4.16vw !important;
+    }
+}
+
+@media (max-width: 425px) {
+    .product-text {
+        padding-left: 3.7vw !important;
+        padding-right: 3.7vw !important;
+    }
+}

@@ -1,0 +1,284 @@
+body {
+	height: 100vh;
+	width: 100vw;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	align-items: center;
+
+	min-width: 320px;
+}
+
+@media (max-width: 1920px) {
+	header, footer {
+		padding-left: 5.1vw !important;
+		padding-right: 5.1vw !important;
+	}
+}
+
+@media (max-width: 1440px) {
+	header, footer {
+		padding-left: 5.1vw !important;
+		padding-right: 5.1vw !important;
+	}
+}
+@media (max-width: 1280px) {
+	header, footer {
+		padding-left: 8.59vw !important;
+		padding-right: 8.59vw !important;
+	}
+}
+
+@media (max-width: 1024px) {
+	header, footer {
+		padding-left: 5vw !important;
+		padding-right: 5vw !important;
+	}
+}
+
+@media (max-width: 768px) {
+	header, footer {
+		padding-left: 5.4vw !important;
+		padding-right: 5.4vw !important;
+	}
+}
+
+@media (max-width: 576px) {
+	header, footer {
+		padding-left: 4.16vw !important;
+		padding-right: 4.16vw !important;
+	}
+}
+
+@media (max-width: 425px) {
+	header, footer {
+		padding-left: 3.7vw !important;
+		padding-right: 3.7vw !important;
+	}
+}
+
+header, footer {
+	width: 100%;
+}
+
+div, p, h1, h2, h3, h4, h5, span, label, button {
+	font-family: 'Inter';
+	font-style: normal;
+}
+
+.page-title {
+	margin: 1em 0;
+
+	font-weight: 700;
+	font-size: 24px;
+	line-height: 29px;
+	text-align: center;
+	text-transform: uppercase;
+
+	color: #0177A6;
+}
+
+@media (max-width: 321px) {
+	.page-title {
+		font-size: 22px;
+		line-height: 27px;
+	}
+}
+
+/* OLD */
+
+.services-icons li + li {
+	margin-left: 10%;
+}
+
+.carousel:hover .carousel-control-prev,  .carousel:hover .carousel-control-next {
+	transition: .5s;
+	background: rgba(0, 0, 0, .4);
+}
+
+.carousel:hover .carousel-caption {
+	transition: .5s;
+	background: rgba(0, 0, 0, .6);
+}
+
+.carousel-control-prev, .carousel-control-next {
+	width: 5%!important;
+}
+
+.carousel-caption {
+	border-radius: 10px 10px 10px 10px;
+	background: rgba(0, 0, 0, .4);
+	margin-left: 10%;
+	margin-right: 10%;
+	margin-bottom: 5%;
+}
+
+.carousel-control-prev:hover {
+	background: rgba(0, 0, 0, .1);
+}
+
+.carousel-image {
+	border-radius: 15px 15px 15px 15px!important;
+}
+
+.carousel-indicators button {
+	background: rgba(0, 0, 0, .6)!important;
+}
+
+.carousel-indicators .active {
+	background: rgba(0, 0, 0, .8);
+}
+
+.navbar-brand {
+	font-size: 24px!important;
+	border-bottom: 1px solid rgba(0, 0, 0, .0);
+}
+
+.navbar-brand a {
+	font-size: 24px!important;
+}
+
+.nav-link {
+	font-size: 18px!important;
+	color: rgba(0, 0, 0, .6)!important;
+	border-bottom: 1px solid rgba(0, 0, 0, .0);
+}
+
+.nav-link a {
+	font-size: 18px!important;
+}
+
+.nav-link:hover, .navbar-brand:hover {
+	color: rgba(0, 0, 0, .8)!important;
+	transition: 1s!important;
+	border-bottom: solid 1px rgba(0, 0, 0, .8);
+}
+
+.about-overlay {
+	background: rgba(0, 0, 0, 0);
+	position: absolute;
+	height: 100%;
+	width: 100%;
+}
+
+.about-caption {
+	transition: 1s;
+	opacity: 0;
+	margin-bottom: 0%!important;
+}
+
+.about-carousel {
+	transition: 1s;
+}
+
+.about-carousel:hover .about-overlay {
+	transition: .5s;
+	background: rgba(0, 0, 0, .5);
+}
+
+.about-carousel:hover .about-caption {
+	transition: .5s;
+	opacity: 1;
+}
+
+.bi-arrow-up-circle-fill {
+	transition: 1s;
+	opacity: 0;
+}
+
+.bi-arrow-up-circle-fill:hover {
+	transition: .5s;
+	opacity: 1!important;
+}
+
+.card-question {
+	cursor: pointer;
+}
+
+.question-collapse {
+	transition: 1s;
+	opacity: .5;
+}
+
+.card-question:hover .question-collapse {
+	transition: .5s;
+	opacity: .9;
+}
+
+.bi-arrow-down-circle {
+	transition: 1s;
+}
+
+.active .bi-arrow-down-circle {
+	transition: 1s;
+	transform: rotate(180deg);
+}
+
+.collapse-icon {
+	float: right;
+	margin-right: 3%;
+}
+
+.album-card {
+	transition: 1s;
+	background: rgba(0, 0, 0, 0);
+	position: absolute;
+	width:100%;
+	height: 100%;
+	border-radius: 8px 8px 8px 8px;
+}
+
+.album-card svg {
+	transition: 1s;
+	margin-top: 31%;
+	fill: rgba(0, 0, 0, 0);
+}
+
+.album-card:hover {
+	cursor: pointer;
+	transition: .5s;
+	background: rgba(0, 0, 0, .6);
+}
+
+.album-card:hover svg {
+	transition: .5s;
+	fill: rgba(255, 255, 255, .8);
+}
+
+.link-phone {
+	padding: 0px!important;
+	transition: 1s;
+	color: rgba(0, 0, 0, .7);
+	text-decoration: none;
+}
+
+.link-mail {
+	padding: 0px!important;
+	transition: 1s;
+	color: rgba(0, 0, 0, .7);
+	text-decoration: none;
+}
+
+
+
+.link-phone:hover, .link-mail:hover {
+	transition: .5s;
+	color: rgba(0, 0, 0, .9);
+}
+
+.partners-layout img {
+	max-height: 192px;
+	min-height: 192px;
+	margin-bottom: 13%;
+}
+
+.preview-layout img {
+	min-height: 500px;
+	max-height: 500px;
+}
+
+.services-header {
+	border-bottom: solid 3px rgba(255, 20, 0, .4);
+    padding: 10px;
+    width: fit-content;
+}

@@ -1,0 +1,141 @@
+@media (max-width: 1440px) {
+    .container-header {
+        background: #E2E2E2!important;
+    }
+}
+
+.company-container {
+    background-size: 100%;
+    background-repeat: no-repeat;
+}
+
+.company-container .container .text-container {
+    padding: 5% 5%;
+}
+
+.text-container .text {
+    padding: 1rem 8em;
+    margin: 0;
+    background: rgba(255, 255, 255, .8);
+}
+
+.company-text {
+    font-weight: 400;
+    font-size: 18px;
+    line-height: 25px;
+}
+
+.company-header {
+    color: #0177A6;
+}
+
+.company-tab:before {
+    content: ' ';
+    margin-left: 3em;
+}
+
+@media (min-width: 1441px) {
+    .company-container {
+        background-image: url("/assets/resources/images/company/c-background.png");
+    }
+}
+
+@media (max-width: 1441px) {
+    .company-container {
+        background-image: url("/assets/resources/images/company/c-background-1440.png");
+    }
+}
+
+@media (max-width: 1141px) {
+    .company-container {
+        background-image: url("/assets/resources/images/company/c-background-1140.png");
+    }
+}
+
+@media (max-width: 961px) {
+    .company-container {
+        background-image: url("/assets/resources/images/company/c-background-960.png");
+    }
+
+    .text-container .text {
+        padding: 1rem 4em;
+    }
+
+    .company-text {
+        font-size: 14px;
+        line-height: 19px;
+    }
+}
+
+@media (max-width: 721px) {
+    .company-container {
+        background-image: url("/assets/resources/images/company/c-background-720.png");
+    }
+}
+
+@media (max-width: 541px) {
+    .company-container {
+        background-image: url("/assets/resources/images/company/c-background-540.png");
+    }
+
+    .text-container .text {
+        padding: 1rem 2em;
+    }
+
+    .company-text {
+        font-size: 16px;
+        line-height: 23px;
+    }
+
+    .company-header {
+        font-weight: 700;
+    }
+}
+
+@media (max-width: 426px) {
+    .company-container .container {
+        padding: 3em 6vw;
+    }
+
+    .text-container {
+        padding-left: 0!important;
+        padding-right: 0!important;
+    }
+
+    .text-container .text {
+        padding: 1em 1.2em;
+        width: 100%;
+    }
+
+    .company-tab:before {
+        content: ' ';
+        margin-left: 2em;
+    }
+    .company-title {
+        text-align: center;
+    }
+
+    .company-title:before {
+        margin-left: 0;
+    }
+
+    .company-text {
+        font-weight: 500;
+        font-size: 16px;
+        line-height: 23px;
+    }
+
+    .company-header {
+        font-weight: 700;
+    }
+
+    .company-container {
+        background-image: url("/assets/resources/images/company/c-background-425.png");
+    }
+}
+
+@media (max-width: 321px) {
+    .company-container .container {
+        padding: 3em 0;
+    }
+}
