@@ -1,11 +1,15 @@
-<div class="product-card" style="display: flex; flex-direction: column; justify-content: space-between; align-items: center; width: 200px; height: 200px; text-align: center; margin-bottom: 20px;">
-    <div class="product-card-title">
-        <p>[[+pagetitle]]</p>
+<a href="/[[~[[+id]]]]" style="text-decoration: none; margin-bottom: 2em;">
+    <div class="product-card" style="max-width: 265px;">
+        <div>
+            <img src="[[+image]]" alt="">
+        </div>
+        <div class="product-card-title">
+            <p>[[+pagetitle]]</p>
+        </div>
+        <div>
+            <hr>
+            <p>перейти в каталог</p>
+            <p>id: [[+id]]</p>
+        </div>
     </div>
-
-    <div>
-        <hr>
-        <p>id: [[+id]]</p>
-        <a href="/[[+uri]]">перейти в каталог</a>
-    </div>
-</div>
+</a>

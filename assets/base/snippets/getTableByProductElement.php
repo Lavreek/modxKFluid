@@ -4,37 +4,42 @@ global $modx;
     if (isset($modx->resourceIdentifier)) {
         $page_id = $modx->resourceIdentifier;
 
-        $thead = ['id', 'pagetitle', 'uri'];
+        $selectCategory = "SELECT `id`, `pagetitle` FROM `modx_site_content` WHERE `parent` = '$page_id' AND `template` = '4'";
+        $categories = $modx->query($selectCategory);
 
-        $selectQuery = "SELECT " . implode(", ", $thead) . " FROM `modx_site_content` WHERE `template` = '3' AND `published` = '1' AND `parent` = '$page_id'";
-        $tableRows = $modx->query($selectQuery);
+        foreach ($categories->fetchAll(PDO::FETCH_ASSOC) as $category) {
+            $thead = ['id', 'pagetitle', 'uri'];
 
-        $trHeader = "";
+            $selectQuery = "SELECT " . implode(", ", $thead) . " FROM `modx_site_content` WHERE `template` = '3' AND `published` = '1' AND `parent` = '{$category['id']}'";
+            $tableRows = $modx->query($selectQuery);
 
-        foreach ($thead as $value) {
-            $trHeader .= "<th scope='col'>$value</th>";
-        }
+            $trHeader = "";
 
-        $trProduction = "";
-
-        foreach ($tableRows->fetchAll(PDO::FETCH_ASSOC) as $row) {
-            $trProduction .= "<tr>";
-
-            foreach ($row as $col => $value) {
-                if ($col == "id") {
-                    $trProduction .= "<th scope='row'>$value</th>"; //$modx->getChunk('product_card', ['pagetitle' => $row['pagetitle'], 'id' => $row['id'], 'uri' => $row['uri']]);
-
-                } else {
-                    $trProduction .= "<td>$value</th>";
-                }
+            foreach ($thead as $value) {
+                $trHeader .= "<th scope='col'>$value</th>";
             }
 
-            $trProduction .= "</tr>";
-        }
+            $trProduction = "";
 
-        if ($trProduction != "") {
-            echo
-            "<div class='product-table'>
+            foreach ($tableRows->fetchAll(PDO::FETCH_ASSOC) as $row) {
+                $trProduction .= "<tr>";
+
+                foreach ($row as $col => $value) {
+                    if ($col == "id") {
+                        $trProduction .= "<th scope='row'>$value</th>"; //$modx->getChunk('product_card', ['pagetitle' => $row['pagetitle'], 'id' => $row['id'], 'uri' => $row['uri']]);
+
+                    } else {
+                        $trProduction .= "<td>$value</th>";
+                    }
+                }
+
+                $trProduction .= "</tr>";
+            }
+
+            if ($trProduction != "") {
+                echo
+                "<div class='product-table'>
+                <h1>{$category['pagetitle']}</h1>
                 <table class='table'>
                     <thead class='thead-light'>
                         <tr>
@@ -46,7 +51,9 @@ global $modx;
                     </tbody>
                 </table>
             </div>";
+            }
         }
+
 
         return;
     }

@@ -1,4 +1,9 @@
 <?php
+    $addr = $_SERVER['REMOTE_ADDR'];
+
+    if ($addr != "185.180.124.14" and $addr != "77.50.146.14" and $addr != "127.0.0.1") {
+        header("Location: https:/fluid.kz/");
+    }
 /*
  * This file is part of MODX Revolution.
  *
