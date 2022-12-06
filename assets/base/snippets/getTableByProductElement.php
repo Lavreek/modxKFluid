@@ -1,6 +1,26 @@
 <?php
 global $modx;
 
+    function qualifier($var) {
+        if (isset($var))
+            return $var;
+
+        return "";
+    }
+
+    /**
+     * Дополнительные колонки в таблице исходя из TV параметра
+     *
+     * @var string $extraCols
+     */
+    $extraCols = qualifier($extraCols);
+
+    /**
+     * Объединение ресурсов
+     *
+     * @var boolean $unity
+     */
+
     if (isset($modx->resourceIdentifier)) {
         $page_id = $modx->resourceIdentifier;
 
@@ -8,33 +28,49 @@ global $modx;
         $categories = $modx->query($selectCategory);
 
         foreach ($categories->fetchAll(PDO::FETCH_ASSOC) as $category) {
-            $thead = ['id', 'pagetitle'];
+            $trProduction = $trHeader = "";
 
-            $selectQuery = "SELECT " . implode(", ", $thead) . " FROM `modx_site_content` WHERE `template` = '3' AND `published` = '1' AND `parent` = '{$category['id']}'";
+            $selectQuery = "SELECT `id`, `pagetitle` FROM `modx_site_content` WHERE `template` = '3' AND `published` = '1' AND `parent` = '{$category['id']}'";
             $tableRows = $modx->query($selectQuery);
 
-            $trHeader = "";
             $translate = ['id' => '#', 'pagetitle' => 'Кодировка'];
 
-            foreach ($thead as $value) {
-                $trHeader .= "<th scope='col'>$translate[$value]</th>";
-            }
+            $trHeader = ""; $fill = true;
 
-            $trProduction = "";
+            $theadExtra = "";
 
             foreach ($tableRows->fetchAll(PDO::FETCH_ASSOC) as $row) {
                 $trProduction .= "<tr>";
+                $tbodyExtra = "";
 
-                foreach ($row as $col => $value) {
-                    if ($col == "id") {
-                        $trProduction .= "<th scope='row'>$value</th>"; //$modx->getChunk('product_card', ['pagetitle' => $row['pagetitle'], 'id' => $row['id'], 'uri' => $row['uri']]);
+                if ($extraCols != "") {
+                    $extraCols = explode(",", $extraCols);
+                    $selectSubParams = "SELECT `caption`, `value` FROM  `modx_site_tmplvars` AS mst INNER JOIN `modx_site_tmplvar_contentvalues` AS mstc ON mst.`id` = mstc.`tmplvarid` WHERE mstc.`contentid` = '{$row['id']}' AND `caption` IN ('" . implode("', '", array_map('trim', $extraCols)) . "')";
+                    $params = ($modx->query($selectSubParams))->fetchAll(PDO::FETCH_ASSOC);
 
-                    } else {
-                        $trProduction .= "<td>$value</th>";
+                    foreach ($params as $param) {
+                        if ($fill)
+                            $theadExtra .= "<th scope='col'>{$param['caption']}</th>";
+                        $tbodyExtra .= "<td>{$param['value']}</td>";
                     }
                 }
 
-                $trProduction .= "</tr>";
+                foreach ($row as $col => $value) {
+
+                    if ($fill) {
+                        $trHeader .= "<th scope='col'>$translate[$col]</th>";
+                    }
+
+                    if ($col == "id") {
+                        $trProduction .= "<th scope='row'>$value</th>";
+
+                    } else {
+                        $trProduction .= "<td>$value</td>";
+                    }
+                }
+
+                $trProduction .= $tbodyExtra . "</tr>";
+                $fill = false;
             }
 
             if ($trProduction != "") {
@@ -44,7 +80,7 @@ global $modx;
                 <table class='table'>
                     <thead class='thead-light'>
                         <tr>
-                            $trHeader
+                            ". $trHeader . $theadExtra ."
                         </tr>
                     </thead>
                     <tbody>
