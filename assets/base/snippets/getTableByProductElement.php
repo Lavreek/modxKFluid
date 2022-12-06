@@ -8,15 +8,16 @@ global $modx;
         $categories = $modx->query($selectCategory);
 
         foreach ($categories->fetchAll(PDO::FETCH_ASSOC) as $category) {
-            $thead = ['id', 'pagetitle', 'uri'];
+            $thead = ['id', 'pagetitle'];
 
             $selectQuery = "SELECT " . implode(", ", $thead) . " FROM `modx_site_content` WHERE `template` = '3' AND `published` = '1' AND `parent` = '{$category['id']}'";
             $tableRows = $modx->query($selectQuery);
 
             $trHeader = "";
+            $translate = ['id' => '#', 'pagetitle' => 'Кодировка'];
 
             foreach ($thead as $value) {
-                $trHeader .= "<th scope='col'>$value</th>";
+                $trHeader .= "<th scope='col'>$translate[$value]</th>";
             }
 
             $trProduction = "";

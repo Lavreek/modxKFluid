@@ -2,4 +2,7 @@
 core
 manager
 
+/connectors/config.core.php
+config.core.php
+
 *.zip
