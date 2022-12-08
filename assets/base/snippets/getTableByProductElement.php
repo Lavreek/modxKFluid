@@ -142,25 +142,30 @@ ini_set('display_errors', 1);
             $thead = $tbody = $theadGroup = $theadGroupPrice = $tbodyGroup = "";
             $fill = true;
 
-            $col = &$tableHeader;
+            $col = array_diff($tableHeader, ['Группа']);
             $row = &$tableRows;
+
             for ($i = 0; $i < count($tableRows); $i++) {
                 $tbody .= "<tr>";
 
-                for ($j = 0; $j < count($tableHeader); $j++) {
+                for ($j = 0; $j < count($col); $j++) {
                     $colKey = key($col);
 
                     if ($fill) {
-                        $thead .= "<th scope='col'>". $tableHeader[$colKey] ."</th>";
+                        $thead .= "<th scope='col'>". $col[$colKey] ."</th>";
                     }
 
                     $rowKey = key($row);
-                    if (isset($tableRows[$rowKey][$colKey])) {
-                        $tbody .= "<td style='text-align: center;'>{$tableRows[$rowKey][$colKey]}</td>";
 
-                    } else {
-                        $tbody .= "<td></td>";
+                    if (!isset($tableRows[$rowKey]['Группа'])) {
+                        if (isset($tableRows[$rowKey][$colKey])) {
+                            $tbody .= "<td style='text-align: center;'>{$tableRows[$rowKey][$colKey]}</td>";
+
+                        } else {
+                            $tbody .= "<td></td>";
+                        }
                     }
+
 
                     next($col);
                 }
@@ -170,7 +175,7 @@ ini_set('display_errors', 1);
                 }
 
                 next($row);
-                reset($tableHeader);
+                reset($col);
                 $tbody .= "</tr>";
             }
             $fill = true;

@@ -6,14 +6,14 @@ $('.card-question').on('click', function(event) {
 });
 
 $(document).ready(function () {
-    if ($.cookie('width') == null) {
-        $.cookie('width', $(window).width());
-        window.location.reload();
-    }
-    if ($(window).width() != $.cookie('width')) {
-        $.cookie('width', $(window).width());
-        window.location.reload();
-    }
+    // @Deprecated
+    //
+    // let winWidth = $(window).width();
+    // console.log('window: ' + winWidth + ' cookie: ' + $.cookie('width'));
+    //
+    // if ($.cookie('width') == null || ($.cookie('width') != null && $.cookie('width') != winWidth)) {
+    //     $.cookie('width', winWidth);
+    // }
 })
 
 $('.btn-collapse').on('click', function () {
