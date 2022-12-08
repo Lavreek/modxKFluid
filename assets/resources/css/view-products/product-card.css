@@ -71,8 +71,5 @@
 }
 
 @media (max-width: 1280px) {
-    .product-grid {
-        justify-content: space-evenly;
-        grid-template-columns: repeat(3, auto);
-    }
+
 }

@@ -1,5 +1,8 @@
 <?php
-global $modx;
+error_reporting(E_ALL | E_STRICT);
+ini_set('display_errors', 1);
+
+    global $modx;
 
     function qualifier($var) {
         if (isset($var))
@@ -181,126 +184,127 @@ global $modx;
                 $theadGroup = "";
                 foreach ($tableHeader as $tableCol => $colValue) {
                     if ($tableCol == "Цена") {
-                        $theadGroup .= "<th style='text-align: center;' scope='col' colspan='3'>". $colValue ."</th>"; // colspan - max group size
+                        $theadGroup .= "<th style='text-align: center;' scope='col' colspan='3'>" . $colValue . "</th>"; // colspan - max group size
 
-                    } elseif ($tableCol == "pagetitle" or $tableCol == "id") {
+                    } elseif (in_array($tableCol, $getParams)) {
                         continue;
 
                     } else {
-                        $theadGroup .= "<th scope='col' rowspan='2'>". $colValue ."</th>";
+                        $theadGroup .= "<th scope='col' rowspan='2'>" . $colValue . "</th>";
                     }
                 }
-                $theadGroup .= "<tr>$theadGroup</tr>";
 
-//                var_dump($groupRows);
-//                foreach ($tableRows as $tableRow1) {
-//                    if (isset($tableRow1['Группа'])) {
-//                        $groupRows[$tableRow1['Группа']] += $tableRow1['id'];
-////                        foreach ($tableRows as $tas => $tro) {
-////                            $groupRows[$tableRow1['Группа']][$tas] = $tro;
-////                        }
-////                        var_dump($tableRow1);
-//                    }
-//
-//                }
-//                var_dump($groupRows);
-//                die();
-//                foreach ($tableHeader as $col => $value) {
-//
-//                    if ($theadGroupPrice == "") {
-//                        foreach ($groupRows as $group => $groupRow) {
-//                            $price = [];
-//                            $tTime += ['id' => "", 'Группа' => $group];
-//
-//                            foreach ($groupRows as $gRow) {
-//                                foreach ($extraCols as $ex) {
-//                                    if (!isset($tTime[$ex])) {
-//                                        $tTime += [$ex => $gRow[0][$ex]];
-//                                    }
-//                                }
-//
-//                                foreach ($gRow as $gArray) {
-//                                    array_push($price, $gArray['Цена']);
-////                                    $theadGroupPrice .= "<td style='max-width: 100px; text-align: center;'>". str_replace([$group, '-'], '', $gArray['pagetitle']) ."</td>";
-//                                }
-//                            }
-//                            $tTime['Цена'] = $price;
-//                            $tbodyGroup .= "<tr>";
-//                            foreach ($tTime as $tkey => $tvalue) {
-//                                if ($tkey == "Цена") {
-//                                    foreach ($tvalue as $sa) {
-//                                        $tbodyGroup .= "<td style='text-align: center;'>$sa</td>";
-//                                    }
-//
-//                                } else {
-//                                    $tbodyGroup .= "<td style='text-align: center;'>$tvalue</td>";
-//                                }
-//                            }
-//                            $tbodyGroup .= "</tr>";
-//                        }
-//                    }
-//                }
+                foreach ($tableRows as $tableRow) {
+                    if (isset($tableRow['Группа'])) {
+                        array_push($groupRows[$tableRow['Группа']], $tableRow);
+
+                    } else {
+                        $tbodyGroup .= "<tr>";
+                        foreach ($tableRow as $tRow) {
+                            $tbodyGroup .= "<td>$tRow</td>";
+                        }
+                        $tbodyGroup .= "</tr>";
+                    }
+                }
+
+                /**
+                 * @var $groupName - Название группы
+                 * @var  $groupRow - Элементы группы
+                 */
+                $tableGroups = [];
+                $tableGroupCols = [];
+
+                foreach ($groupRows as $groupName => $groupRow) {
+                    $groupParams = [];
+
+                    foreach ($groupRow as $rowElement) {
+                        foreach ($rowElement as $eParam => $eValue) {
+                            if (!in_array($eParam, $getParams)) {
+                                if (!isset($groupParams[$eParam])) {
+                                    if ($eParam == 'Цена') {
+                                        $tableColValue = str_replace([$rowElement['Группа'], '-'], '', $rowElement['pagetitle']);
+
+                                        if (!in_array($tableColValue, $tableGroupCols)) {
+                                            array_push($tableGroupCols, $tableColValue);
+                                        }
+
+                                        $groupParams += [$eParam => [$tableColValue => $eValue]];
+
+                                    } else {
+                                        $groupParams += [$eParam => $eValue];
+                                    }
+                                }
+                                if (isset($groupParams[$eParam])) {
+                                    if ($eParam == 'Цена') {
+                                        $tableColValue = str_replace([$rowElement['Группа'], '-'], '', $rowElement['pagetitle']);
+
+                                        if (!in_array($tableColValue, $tableGroupCols)) {
+                                            array_push($tableGroupCols, $tableColValue);
+                                        }
+
+                                        $groupParams['Цена'] += [$tableColValue => $eValue];
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    array_push($tableGroups, $groupParams);
+                }
+
+
+                $extraGroupLine = "";
+                foreach ($tableGroups as $tGroup) {
+                    $extraGroupLine .= "<tr>";
+
+                    foreach ($tGroup as $tCol => $tValue) {
+                        if ($tCol == "Цена") {
+                            foreach ($tableGroupCols as $tgCol) {
+                                if (isset($tValue[$tgCol])) {
+                                    $extraGroupLine .= "<td>$tValue[$tgCol]</td>";
+
+                                } else {
+                                    $extraGroupLine .= "<td></td>";
+                                }
+                            }
+
+                        } else {
+                            $extraGroupLine .= "<td>$tValue</td>";
+                        }
+
+                    }
+
+                    $extraGroupLine .= "</tr>";
+                }
+
+                $theadGroup .= "<tr>";
+
+                foreach ($tableGroupCols as $value) {
+                    $theadGroup .= "<td>$value</td>";
+                }
+
+                $theadGroup .= "</tr>";
+
+                echo
+                    "<div class='product-table'>
+                        <h1>{$category['pagetitle']}</h1>
+                        <table class='table table-hover table-bordered' style='text-align: center'>
+                            <thead class='table-light' style='vertical-align: middle;'>
+                                $theadGroup
+                            </thead>
+                            <tbody>
+                                $extraGroupLine
+                            </tbody>
+                        </table>
+                        
+                        <table class='table' style='text-align: center'>
+                            $thead
+                            <tbody>
+                                $tbody
+                            </tbody>
+                        </table>
+                    </div>";
             }
-
-//            $thead = "<thead class='thead-light' style='vertical-align: middle; text-align: center;'>
-//                            <tr>$thead</tr>
-//                        </thead>";
-//
-//            $theadGroup = "<thead class='thead-light' style='vertical-align: middle; text-align: center;'>
-//                            <tr>$theadGroup</tr><tr style='width: auto;'>$theadGroupPrice</tr>
-//                        </thead>";
-            echo
-                "<div class='product-table'>
-                    <h1>{$category['pagetitle']}</h1>
-                    <table class='table'>
-                        $theadGroup
-                        <tbody>
-                            $tbodyGroup
-                        </tbody>
-                    </table>
-                    <table class='table'>
-                        $thead
-                        <tbody>
-                            $tbody
-                        </tbody>
-                    </table>
-                </div>";
-//            echo '<table class="table">
-//  <thead>
-//    <tr>
-//      <th scope="col">#</th>
-//      <th scope="col">First</th>
-//      <th scope="col">Last</th>
-//      <th scope="col">Handle</th>
-//    </tr>
-//  </thead>
-//  <tbody>
-//    <tr>
-//      <th scope="row">1</th>
-//      <td data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">Mark</td>
-//      <td>Otto</td>
-//      <td>@mdo</td>
-//    </tr>
-//    <tr class="collapse" id="collapseExample">
-//       <td colspan="4">
-//      <div class="card card-body">
-//        Some placeholder content for the collapse component. This panel is hidden by default but revealed when the user activates the relevant trigger.
-//      </div>
-//      </td>
-//    </tr>
-//    <tr>
-//      <th scope="row">2</th>
-//      <td>Jacob</td>
-//      <td>Thornton</td>
-//      <td>@fat</td>
-//    </tr>
-//    <tr>
-//      <th scope="row">3</th>
-//      <td colspan="2">Larry the Bird</td>
-//      <td>@twitter</td>
-//    </tr>
-//  </tbody>
-//</table>';
         }
 
         return;
