@@ -1,17 +1,14 @@
 <?php
-error_reporting(E_ALL | E_STRICT);
-ini_set('display_errors', 1);
+global $modx;
 
-    global $modx;
+if (isset($modx->resourceIdentifier)) {
+    $parent = $modx->resource->get('parent');
 
-    if (isset($modx->resourceIdentifier)) {
-        $parent = $modx->resource->get('parent');
-
-        if ($parent < 1) {
-            $parent = 1;
-        }
-
-        echo $modx->getChunk('climb_higher_button', ['id' => $parent]);
+    if ($parent < 1) {
+        $parent = 1;
     }
 
-    return;
+    echo $modx->getChunk('climb_higher_button', ['id' => $parent]);
+}
+
+return;

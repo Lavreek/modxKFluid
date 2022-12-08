@@ -1,22 +1,24 @@
 <?php
-error_reporting(E_ALL | E_STRICT);
-ini_set('display_errors', 1);
+global $modx;
 
-    global $modx;
+if (isset($modx->resourceIdentifier) and $modx->resourceIdentifier > 0) {
+    $page_id = $modx->resourceIdentifier;
 
-    if (isset($modx->resourceIdentifier)) {
-        $page_id = $modx->resourceIdentifier;
+    $selectChilds = "SELECT `id`, `pagetitle` FROM `modx_site_content` WHERE `parent` = '$page_id' AND `published` = '1' AND `template` = '2'";
+    $childs = $modx->query($selectChilds);
 
-        $selectChilds = "SELECT `id`, `pagetitle` FROM `modx_site_content` WHERE `parent` = '$page_id' AND `published` = '1' AND `template` = '2'";
-        $childs = $modx->query($selectChilds);
-
+    if (!is_bool($childs)) {
         $childs = $childs->fetchAll(PDO::FETCH_ASSOC);
 
         $countChilds = count($childs);
 
+        if ($countChilds < 1) {
+            return;
+        }
+
         if ($countChilds >= 5) {
             $extra = "gr-5";
-        } else {
+        } elseif ($countChilds > 0) {
             $extra = "gr-$countChilds";
         }
 
@@ -35,13 +37,14 @@ ini_set('display_errors', 1);
                         break;
                 }
             }
-            
+
             $childCard .= $modx->getChunk('product_card', $row);
         }
 
         if ($childCard != "") {
             echo "<div class='product-grid $extra'> $childCard </div>";
         }
-
-        return;
     }
+}
+
+return;
