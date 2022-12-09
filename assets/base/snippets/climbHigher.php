@@ -1,14 +1,25 @@
 <?php
 global $modx;
 
-if (isset($modx->resourceIdentifier)) {
-    $parent = $modx->resource->get('parent');
+/**
+ * @var int $goTo - Параметр используется для перехода к определённому ресурсу.
+ * @var string $caption - Параметр используется для использования произвольного текста.
+ */
 
-    if ($parent < 1) {
-        $parent = 1;
+if (isset($modx->resourceIdentifier)) {
+    if (!isset($goTo)) {
+        $goTo = $modx->resource->get('parent');
     }
 
-    echo $modx->getChunk('climb_higher_button', ['id' => $parent]);
+    if (!isset($caption)) {
+        $caption = "Вернуться назад";
+    }
+
+    if ($goTo < 1) {
+        $goTo = 1;
+    }
+
+    echo $modx->getChunk('climb_higher_button', ['id' => $goTo, 'caption' => $caption]);
 }
 
 return;

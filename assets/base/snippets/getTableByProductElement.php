@@ -19,16 +19,24 @@ ini_set('display_errors', 1);
     $extraCols = qualifier($extraCols);
 
     /**
-     * Объединение ресурсов по группе
+     * Объединение ресурсов по заданному полю
      *
-     * @var boolean $unity
+     * @var boolean $unityCol
      */
-    $unity = qualifier($unity);
+    $unityCol = qualifier($unityCol);
+
+    /**
+     * Идентификатор ресурса, от которого происходит поиск продукции
+     *
+     * @var int $pageId
+     */
 
     if (isset($modx->resourceIdentifier)) {
-        $page_id = $modx->resourceIdentifier;
+        if (!isset($pageId)) {
+            $pageId = $modx->resourceIdentifier;
+        }
 
-        $selectCategory = "SELECT `id`, `pagetitle` FROM `modx_site_content` WHERE `parent` = '$page_id' AND `template` = '4'";
+        $selectCategory = "SELECT `id`, `pagetitle` FROM `modx_site_content` WHERE `parent` = '$pageId' AND `template` = '4'";
         $categories = $modx->query($selectCategory);
 
         $getParams = ['id', 'pagetitle'];
@@ -80,7 +88,7 @@ ini_set('display_errors', 1);
                                 /**
                                  * Создание объединения
                                  */
-                                if ($unity != "") {
+                                if ($unityCol != "") {
                                     array_push($extraColsExplode, "Группа");
                                 }
 
@@ -117,7 +125,7 @@ ini_set('display_errors', 1);
                     /**
                      * Создание группы
                      */
-                    if ($unity == "1") {
+                    if ($unityCol != "") {
                         if (isset($tableRows[$product['id']]['Группа'])) {
                             $group = $tableRows[$product['id']]['Группа'];
 
@@ -139,7 +147,7 @@ ini_set('display_errors', 1);
              * @var string $tbody - Содержимое тела таблицы
              * @var bool $fill - Маяк заполнения заголовка таблицы
              */
-            $thead = $tbody = $theadGroup = $theadGroupPrice = $tbodyGroup = "";
+            $thead = $tbody = $theadGroupPrice = $tbodyGroup = "";
             $fill = true;
 
             $col = array_diff($tableHeader, ['Группа']);
@@ -166,7 +174,6 @@ ini_set('display_errors', 1);
                         }
                     }
 
-
                     next($col);
                 }
 
@@ -178,15 +185,17 @@ ini_set('display_errors', 1);
                 reset($col);
                 $tbody .= "</tr>";
             }
+
             $fill = true;
 
-            if ($unity == "1") {
+            if ($unityCol == "Цена") {
                 $unityRow = [];
                 $unityHeader = [];
 
                 $getCanon = $getUnity = "";
 
                 $theadGroup = "";
+
                 foreach ($tableHeader as $tableCol => $colValue) {
                     if ($tableCol == "Цена") {
                         $theadGroup .= "<th style='text-align: center;' scope='col' colspan='3'>" . $colValue . "</th>"; // colspan - max group size
@@ -226,6 +235,9 @@ ini_set('display_errors', 1);
                         foreach ($rowElement as $eParam => $eValue) {
                             if (!in_array($eParam, $getParams)) {
                                 if (!isset($groupParams[$eParam])) {
+                                    if (!isset($groupParams['id'])) {
+                                        $groupParams += ['id' => $rowElement['id']];
+                                    }
                                     if ($eParam == 'Цена') {
                                         $tableColValue = str_replace([$rowElement['Группа'], '-'], '', $rowElement['pagetitle']);
 
@@ -257,26 +269,28 @@ ini_set('display_errors', 1);
                     array_push($tableGroups, $groupParams);
                 }
 
-
                 $extraGroupLine = "";
                 foreach ($tableGroups as $tGroup) {
                     $extraGroupLine .= "<tr>";
 
                     foreach ($tGroup as $tCol => $tValue) {
-                        if ($tCol == "Цена") {
-                            foreach ($tableGroupCols as $tgCol) {
-                                if (isset($tValue[$tgCol])) {
-                                    $extraGroupLine .= "<td>$tValue[$tgCol]</td>";
+                        if (!in_array($tCol, $getParams)) {
+                            if ($tCol == "Цена") {
+                                foreach ($tableGroupCols as $tgCol) {
+                                    if (isset($tValue[$tgCol])) {
+                                        $extraGroupLine .= "<td>$tValue[$tgCol]</td>";
 
-                                } else {
-                                    $extraGroupLine .= "<td></td>";
+                                    } else {
+                                        $extraGroupLine .= "<td></td>";
+                                    }
                                 }
+                            } elseif ($tCol == "Группа") {
+                                $extraGroupLine .= "<td><a href='[[~{$tGroup['id']}]]'>$tValue</a></td>";
+
+                            } else {
+                                $extraGroupLine .= "<td>$tValue</td>";
                             }
-
-                        } else {
-                            $extraGroupLine .= "<td>$tValue</td>";
                         }
-
                     }
 
                     $extraGroupLine .= "</tr>";
