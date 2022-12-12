@@ -70,6 +70,27 @@
     line-height: 27px;
 }
 
-@media (max-width: 1280px) {
+@media (max-width: 1440px) {
+    .gr-5 {
+        grid-template-columns: repeat(4, auto);
+    }
+}
 
+@media (max-width: 1280px) {
+    .gr-5 {
+        grid-template-columns: repeat(3, auto);
+    }
+}
+
+@media (max-width: 768px) {
+    .gr-5 {
+        justify-content: center;
+        grid-template-columns: repeat(2, auto);
+    }
+}
+
+@media (max-width: 576px) {
+    .product-card {
+        width: 245px;
+    }
 }
