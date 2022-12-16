@@ -306,23 +306,31 @@ ini_set('display_errors', 1);
 
                 echo
                     "<div class='product-table'>
-                        <h1>{$category['pagetitle']}</h1>
-                        <table class='table table-hover table-bordered' style='text-align: center'>
+                        <h1>{$category['pagetitle']}</h1>";
+                if ($unityCol != "") {
+                    echo
+                        "<table class='table table-hover table-bordered' style='text-align: center'>
                             <thead class='table-light' style='vertical-align: middle;'>
                                 $theadGroup
                             </thead>
                             <tbody>
                                 $extraGroupLine
                             </tbody>
-                        </table>
-                        
-                        <table class='table' style='text-align: center'>
-                            $thead
+                        </table>";
+
+                } else {
+                    echo
+                        "<table class='table' style='text-align: center'>
+                            <thead class='table-light' style='vertical-align: middle;'>
+                                $thead
+                            </thead>
                             <tbody>
                                 $tbody
                             </tbody>
-                        </table>
-                    </div>";
+                        </table>";
+                }
+
+                echo "</div>";
             }
         }
 
