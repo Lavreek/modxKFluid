@@ -16,7 +16,7 @@ if (isset($modx->resourceIdentifier)) {
 
             echo "<h3 class='page-title py-em-2'><a style='all: unset; cursor: pointer;' href='[[~{$category['id']}]]'>{$category['pagetitle']}</a></h3>";
 
-            $selectChilds = "SELECT `id`, `pagetitle` FROM `modx_site_content` WHERE `parent` = '{$category['id']}' AND `published` = '1'";
+            $selectChilds = "SELECT `id`, `pagetitle` FROM `modx_site_content` WHERE `template` = '2' AND `parent` = '{$category['id']}' AND `published` = '1'";
             $childs = $modx->query($selectChilds);
 
             if (!is_bool($childs)) {
