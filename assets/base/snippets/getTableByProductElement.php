@@ -151,7 +151,7 @@ ini_set('display_errors', 1);
                     /**
                      * Создание группы
                      */
-                    if ($unityCol != "") {
+                    if (isset($unityCol) and $unityCol != "") {
                         if (isset($tableRows[$product['id']]['Группа'])) {
                             $group = $tableRows[$product['id']]['Группа'];
 
