@@ -40,26 +40,20 @@ if (isset($unityCol)) {
         }
     }
 
-    $preLoad = ['id' => '#', 'pagetitle' => 'Кодировка'];
+    $localeArray = ['id' => '#', 'pagetitle' => 'Кодировка'];
 
     if (isset($localeCol)) {
-        $localeArray = $preLoad;
+        if (is_string($localeCol)) {
+            $localeMulti = explode(",", str_replace($variableSearch, '', $localeCol));
 
-        $localeMulti = explode(",", str_replace($variableSearch, '', $localeCol));
+            foreach ($localeMulti as $cols) {
+                $exp = array_map('trim', explode(localeDelimiter, $cols));
 
-        foreach ($localeMulti as $cols) {
-            $exp = array_map('trim', explode(localeDelimiter, $cols));
-
-            if (isset($exp[0], $exp[1])) {
-                $localeArray += [$exp[0] => $exp[1]];
+                if (isset($exp[0], $exp[1])) {
+                    $localeArray += [$exp[0] => $exp[1]];
+                }
             }
         }
-
-        if (count($localeArray) < 1) {
-            unset($localeCol, $localeArray);
-        }
-    } else {
-        $localeArray = $preLoad;
     }
 
 
