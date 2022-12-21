@@ -4,32 +4,71 @@ ini_set('display_errors', 1);
 
     global $modx;
 
-    function qualifier($var) {
-        if (isset($var))
-            return $var;
+    const localeDelimiter = ":"; // Стандартный разделитель для локализации колонок
+    const uninyDelimiter = ":"; // Стандартный разделитель для объединения
 
-        return "";
+
+    /**
+     * @var string $localeCol Изменение названий колонок в шапке таблицы
+     * @var string $extraCols Дополнительные колонки в таблице исходя из TV параметра
+     *
+     * @var string $unityCol Объединение ресурсов по заданному полю
+     *     &unityCol=`Цена:Кодировка` Разделитель - uninyDelimiter
+     *
+     * @var string $pageId Идентификатор ресурса, от которого происходит поиск продукции
+     */
+
+    $variableSearch = ["\t", "\n", "\r"]; // Удаление табов, переносов, разрывов из строки параметра
+
+if (isset($unityCol)) {
+        $unityArray = [];
+
+        if (is_string($unityCol)) {
+            $unityMulti = explode(",", str_replace($variableSearch, '', $unityCol));
+
+            foreach ($unityMulti as $cols) {
+                $exp = array_map('trim', explode(uninyDelimiter, $cols));
+
+                if (isset($exp[0], $exp[1])) {
+                    $unityArray += [$exp[0] => $exp[1]];
+                }
+            }
+
+            if (count($unityArray) < 1) {
+                unset($unityCol, $unityArray);
+            }
+        }
     }
 
-    /**
-     * Дополнительные колонки в таблице исходя из TV параметра
-     *
-     * @var string $extraCols
-     */
-    $extraCols = qualifier($extraCols);
+    $preLoad = ['id' => '#', 'pagetitle' => 'Кодировка'];
+
+    if (isset($localeCol)) {
+        $localeArray = $preLoad;
+
+        $localeMulti = explode(",", str_replace($variableSearch, '', $localeCol));
+
+        foreach ($localeMulti as $cols) {
+            $exp = array_map('trim', explode(localeDelimiter, $cols));
+
+            if (isset($exp[0], $exp[1])) {
+                $localeArray += [$exp[0] => $exp[1]];
+            }
+        }
+
+        if (count($localeArray) < 1) {
+            unset($localeCol, $localeArray);
+        }
+    } else {
+        $localeArray = $preLoad;
+    }
+
 
     /**
-     * Объединение ресурсов по заданному полю
-     *
-     * @var boolean $unityCol
+     * @var array $defaultHeaderCols Набор всегда отображающихся параметров
+     * @var string $defaultHeaderColsString Строка параметров для SQL запроса
      */
-    $unityCol = qualifier($unityCol);
-
-    /**
-     * Идентификатор ресурса, от которого происходит поиск продукции
-     *
-     * @var int $pageId
-     */
+    $defaultHeaderCols = ['id', 'pagetitle'];
+    $defaultHeaderColsString = "`" . implode("`, `", $defaultHeaderCols) . "`";
 
     if (isset($modx->resourceIdentifier)) {
         if (!isset($pageId)) {
@@ -39,13 +78,11 @@ ini_set('display_errors', 1);
         $selectCategory = "SELECT `id`, `pagetitle` FROM `modx_site_content` WHERE `parent` = '$pageId' AND `template` = '4'";
         $categories = $modx->query($selectCategory);
 
-        $getParams = ['id', 'pagetitle'];
-
         foreach ($categories->fetchAll(PDO::FETCH_ASSOC) as $category) {
-            $selectProduction = "SELECT `". implode("`, `", $getParams) ."` FROM `modx_site_content` WHERE `template` = '3' AND `published` = '1' AND `parent` = '{$category['id']}'";
+            $selectProduction = "SELECT $defaultHeaderColsString FROM `modx_site_content` WHERE `template` = '3' AND `published` = '1' AND `parent` = '{$category['id']}'";
             $fetch = $modx->query($selectProduction);
 
-            $tableHeader = []; $locale = ['id' => '#', 'pagetitle' => 'Кодировка'];
+            $tableHeader = [];
             $tableRows = [];
             $groupRows = [];
 
@@ -64,14 +101,12 @@ ini_set('display_errors', 1);
                         /**
                          * Создание заголовка таблицы
                          */
-                        if (!isset($tableHeader[$index])) {
-                            if (isset($locale[$index])) {
-                                $tableHeader += [$index => $locale[$index]];
-
-                            } else {
-                                $tableHeader += [$index => $index];
-                            }
+                        if (!in_array($index, $tableHeader)) {
+                            array_push($tableHeader, $index);
                         }
+                    }
+                    foreach ($product as $index => $value) {
+
                         /**
                          * Добавление продукции
                          */
@@ -95,7 +130,7 @@ ini_set('display_errors', 1);
                                 $extraCols = array_map('trim', $extraColsExplode);
                             }
 
-                            $selectExtraCols = "SELECT `caption`, `value` FROM `modx_site_tmplvars` AS mst INNER JOIN `modx_site_tmplvar_contentvalues` AS mstc ON mst.`id` = mstc.`tmplvarid` WHERE mstc.`contentid` = '{$product['id']}' AND `caption` IN ('". implode("', '", $extraCols)."')";
+                            $selectExtraCols = "SELECT mst.`id`, `name`, `caption`, `value` FROM `modx_site_tmplvars` AS mst INNER JOIN `modx_site_tmplvar_contentvalues` AS mstc ON mst.`id` = mstc.`tmplvarid` WHERE mstc.`contentid` = '{$product['id']}' AND `caption` IN ('". implode("', '", $extraCols)."')";
                             $fetch = $modx->query($selectExtraCols);
                             $extraParams = $fetch->fetchAll(PDO::FETCH_ASSOC);
 
@@ -104,19 +139,15 @@ ini_set('display_errors', 1);
                                     /**
                                      * Добавление дополнительных колонок в заголовок
                                      */
-                                    if (!isset($tableHeader[$param['caption']])) {
-                                        if (isset($locale[$param['caption']])) {
-                                            $tableHeader += [$index => $locale[$param['caption']]];
-
-                                        } else {
-                                            $tableHeader += [$param['caption'] => $param['caption']];
-                                        }
+                                    if (!in_array($param['name'], $tableHeader)) {
+                                        $localeArray += [$param['name'] => $param['caption']];
+                                        $tableHeader += [($param['id'] + count($defaultHeaderCols) - 1) => $param['name']];
                                     }
                                     /**
                                      * Добавление дополнительных колонок в строки
                                      */
                                     if (!isset($tableRows[$product['id']][$param['caption']])) {
-                                        $tableRows[$product['id']] += [$param['caption'] => $param['value']];
+                                        $tableRows[$product['id']] += [$param['name'] => $param['value']];
                                     }
                                 }
                             }
@@ -147,27 +178,34 @@ ini_set('display_errors', 1);
              * @var string $tbody - Содержимое тела таблицы
              * @var bool $fill - Маяк заполнения заголовка таблицы
              */
-            $thead = $tbody = $theadGroupPrice = $tbodyGroup = "";
+
+            $thead = $tbody = "";
             $fill = true;
 
             $col = array_diff($tableHeader, ['Группа']);
-            $row = &$tableRows;
+            $row = $tableRows;
 
             for ($i = 0; $i < count($tableRows); $i++) {
                 $tbody .= "<tr>";
 
                 for ($j = 0; $j < count($col); $j++) {
                     $colKey = key($col);
+                    $colValue = current($col);
 
                     if ($fill) {
-                        $thead .= "<th scope='col'>". $col[$colKey] ."</th>";
+                        if (isset($localeArray[$col[$colKey]])) {
+                            $thead .= "<th scope='col'>". $localeArray[$col[$colKey]] ."</th>";
+
+                        } else {
+                            $thead .= "<th scope='col'>". $col[$colKey] ."</th>";
+                        }
                     }
 
                     $rowKey = key($row);
 
                     if (!isset($tableRows[$rowKey]['Группа'])) {
-                        if (isset($tableRows[$rowKey][$colKey])) {
-                            $tbody .= "<td style='text-align: center;'>{$tableRows[$rowKey][$colKey]}</td>";
+                        if (isset($tableRows[$rowKey][$colValue])) {
+                            $tbody .= "<td style='text-align: center;'>{$tableRows[$rowKey][$colValue]}</td>";
 
                         } else {
                             $tbody .= "<td></td>";
@@ -188,127 +226,131 @@ ini_set('display_errors', 1);
 
             $fill = true;
 
-            if ($unityCol == "Цена") {
-                $unityRow = [];
-                $unityHeader = [];
+            $theadGroupPrice = $tbodyGroup = "";
 
-                $getCanon = $getUnity = "";
+            if (isset($unityArray['Цена'])) {
+                if ($unityArray['Цена'] == "Кодировка") {
 
-                $theadGroup = "";
+                    $unityRow = [];
+                    $unityHeader = [];
 
-                foreach ($tableHeader as $tableCol => $colValue) {
-                    if ($tableCol == "Цена") {
-                        $theadGroup .= "<th style='text-align: center;' scope='col' colspan='3'>" . $colValue . "</th>"; // colspan - max group size
+                    $getCanon = $getUnity = "";
 
-                    } elseif (in_array($tableCol, $getParams)) {
-                        continue;
+                    $theadGroup = "";
 
-                    } else {
-                        $theadGroup .= "<th scope='col' rowspan='2'>" . $colValue . "</th>";
-                    }
-                }
+                    foreach ($tableHeader as $tableCol => $colValue) {
+                        if ($tableCol == "Цена") {
+                            $theadGroup .= "<th style='text-align: center;' scope='col' colspan='3'>" . $colValue . "</th>"; // colspan - max group size
 
-                foreach ($tableRows as $tableRow) {
-                    if (isset($tableRow['Группа'])) {
-                        array_push($groupRows[$tableRow['Группа']], $tableRow);
+                        } elseif (in_array($tableCol, $defaultHeaderCols)) {
+                            continue;
 
-                    } else {
-                        $tbodyGroup .= "<tr>";
-                        foreach ($tableRow as $tRow) {
-                            $tbodyGroup .= "<td>$tRow</td>";
+                        } else {
+                            $theadGroup .= "<th scope='col' rowspan='2'>" . $colValue . "</th>";
                         }
-                        $tbodyGroup .= "</tr>";
                     }
-                }
 
-                /**
-                 * @var $groupName - Название группы
-                 * @var  $groupRow - Элементы группы
-                 */
-                $tableGroups = [];
-                $tableGroupCols = [];
+                    foreach ($tableRows as $tableRow) {
+                        if (isset($tableRow['Группа'])) {
+                            array_push($groupRows[$tableRow['Группа']], $tableRow);
 
-                foreach ($groupRows as $groupName => $groupRow) {
-                    $groupParams = [];
+                        } else {
+                            $tbodyGroup .= "<tr>";
+                            foreach ($tableRow as $tRow) {
+                                $tbodyGroup .= "<td>$tRow</td>";
+                            }
+                            $tbodyGroup .= "</tr>";
+                        }
+                    }
 
-                    foreach ($groupRow as $rowElement) {
-                        foreach ($rowElement as $eParam => $eValue) {
-                            if (!in_array($eParam, $getParams)) {
-                                if (!isset($groupParams[$eParam])) {
-                                    if (!isset($groupParams['id'])) {
-                                        $groupParams += ['id' => $rowElement['id']];
-                                    }
-                                    if ($eParam == 'Цена') {
-                                        $tableColValue = str_replace([$rowElement['Группа'], '-'], '', $rowElement['pagetitle']);
+                    /**
+                     * @var $groupName - Название группы
+                     * @var  $groupRow - Элементы группы
+                     */
+                    $tableGroups = [];
+                    $tableGroupCols = [];
 
-                                        if (!in_array($tableColValue, $tableGroupCols)) {
-                                            array_push($tableGroupCols, $tableColValue);
+                    foreach ($groupRows as $groupName => $groupRow) {
+                        $groupParams = [];
+
+                        foreach ($groupRow as $rowElement) {
+                            foreach ($rowElement as $eParam => $eValue) {
+                                if (!in_array($eParam, $defaultHeaderCols)) {
+                                    if (!isset($groupParams[$eParam])) {
+                                        if (!isset($groupParams['id'])) {
+                                            $groupParams += ['id' => $rowElement['id']];
                                         }
+                                        if ($eParam == 'Цена') {
+                                            $tableColValue = str_replace([$rowElement['Группа'], '-'], '', $rowElement['pagetitle']);
 
-                                        $groupParams += [$eParam => [$tableColValue => $eValue]];
+                                            if (!in_array($tableColValue, $tableGroupCols)) {
+                                                array_push($tableGroupCols, $tableColValue);
+                                            }
 
-                                    } else {
-                                        $groupParams += [$eParam => $eValue];
-                                    }
-                                }
-                                if (isset($groupParams[$eParam])) {
-                                    if ($eParam == 'Цена') {
-                                        $tableColValue = str_replace([$rowElement['Группа'], '-'], '', $rowElement['pagetitle']);
+                                            $groupParams += [$eParam => [$tableColValue => $eValue]];
 
-                                        if (!in_array($tableColValue, $tableGroupCols)) {
-                                            array_push($tableGroupCols, $tableColValue);
+                                        } else {
+                                            $groupParams += [$eParam => $eValue];
                                         }
+                                    }
+                                    if (isset($groupParams[$eParam])) {
+                                        if ($eParam == 'Цена') {
+                                            $tableColValue = str_replace([$rowElement['Группа'], '-'], '', $rowElement['pagetitle']);
 
-                                        $groupParams['Цена'] += [$tableColValue => $eValue];
+                                            if (!in_array($tableColValue, $tableGroupCols)) {
+                                                array_push($tableGroupCols, $tableColValue);
+                                            }
+
+                                            $groupParams['Цена'] += [$tableColValue => $eValue];
+                                        }
                                     }
                                 }
                             }
                         }
+
+                        array_push($tableGroups, $groupParams);
                     }
 
-                    array_push($tableGroups, $groupParams);
-                }
+                    $extraGroupLine = "";
+                    foreach ($tableGroups as $tGroup) {
+                        $extraGroupLine .= "<tr>";
 
-                $extraGroupLine = "";
-                foreach ($tableGroups as $tGroup) {
-                    $extraGroupLine .= "<tr>";
+                        foreach ($tGroup as $tCol => $tValue) {
+                            if (!in_array($tCol, $defaultHeaderCols)) {
+                                if ($tCol == "Цена") {
+                                    foreach ($tableGroupCols as $tgCol) {
+                                        if (isset($tValue[$tgCol])) {
+                                            $extraGroupLine .= "<td>$tValue[$tgCol]</td>";
 
-                    foreach ($tGroup as $tCol => $tValue) {
-                        if (!in_array($tCol, $getParams)) {
-                            if ($tCol == "Цена") {
-                                foreach ($tableGroupCols as $tgCol) {
-                                    if (isset($tValue[$tgCol])) {
-                                        $extraGroupLine .= "<td>$tValue[$tgCol]</td>";
-
-                                    } else {
-                                        $extraGroupLine .= "<td></td>";
+                                        } else {
+                                            $extraGroupLine .= "<td></td>";
+                                        }
                                     }
-                                }
-                            } elseif ($tCol == "Группа") {
-                                $extraGroupLine .= "<td><a href='[[~{$tGroup['id']}]]'>$tValue</a></td>";
+                                } elseif ($tCol == "Группа") {
+                                    $extraGroupLine .= "<td><a href='[[~{$tGroup['id']}]]'>$tValue</a></td>";
 
-                            } else {
-                                $extraGroupLine .= "<td>$tValue</td>";
+                                } else {
+                                    $extraGroupLine .= "<td>$tValue</td>";
+                                }
                             }
                         }
+
+                        $extraGroupLine .= "</tr>";
                     }
 
-                    $extraGroupLine .= "</tr>";
-                }
+                    $theadGroup .= "<tr>";
 
-                $theadGroup .= "<tr>";
+                    foreach ($tableGroupCols as $value) {
+                        $theadGroup .= "<td>$value</td>";
+                    }
 
-                foreach ($tableGroupCols as $value) {
-                    $theadGroup .= "<td>$value</td>";
-                }
+                    $theadGroup .= "</tr>";
 
-                $theadGroup .= "</tr>";
-
-                echo
+                    echo
                     "<div class='product-table'>
                         <h1>{$category['pagetitle']}</h1>";
-                if ($unityCol != "") {
-                    echo
+                    if ($unityCol != "") {
+                        echo
                         "<table class='table table-hover table-bordered' style='text-align: center'>
                             <thead class='table-light' style='vertical-align: middle;'>
                                 $theadGroup
@@ -317,20 +359,25 @@ ini_set('display_errors', 1);
                                 $extraGroupLine
                             </tbody>
                         </table>";
+                    }
 
-                } else {
-                    echo
-                        "<table class='table' style='text-align: center'>
-                            <thead class='table-light' style='vertical-align: middle;'>
-                                $thead
-                            </thead>
-                            <tbody>
-                                $tbody
-                            </tbody>
-                        </table>";
+                    echo "</div>";
                 }
+            }
 
-                echo "</div>";
+            if (!isset($unityArray)) {
+                echo
+                "<div class='product-table'>
+                    <h1>{$category['pagetitle']}</h1>
+                    <table class='table' style='text-align: center'>
+                        <thead class='table-light' style='vertical-align: middle;'>
+                            $thead
+                        </thead>
+                        <tbody>
+                            $tbody
+                        </tbody>
+                    </table>
+                </div>";
             }
         }
 
