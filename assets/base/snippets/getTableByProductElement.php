@@ -7,9 +7,10 @@ ini_set('display_errors', 1);
     const localeDelimiter = ":"; // Стандартный разделитель для локализации колонок
     const uninyDelimiter = ":"; // Стандартный разделитель для объединения
 
-
     /**
      * @var string $localeCol Изменение названий колонок в шапке таблицы
+     *     &localeCol=`id:#,pagetitle:Кодировка` Разделитель - localeDelimiter
+     *
      * @var string $extraCols Дополнительные колонки в таблице исходя из TV параметра
      *
      * @var string $unityCol Объединение ресурсов по заданному полю
@@ -20,7 +21,7 @@ ini_set('display_errors', 1);
 
     $variableSearch = ["\t", "\n", "\r"]; // Удаление табов, переносов, разрывов из строки параметра
 
-if (isset($unityCol)) {
+    if (isset($unityCol)) {
         $unityArray = [];
 
         if (is_string($unityCol)) {
@@ -110,14 +111,14 @@ if (isset($unityCol)) {
                         /**
                          * Дополнение экстра столбцов
                          */
-                        if ($extraCols != "") {
+                        if (isset($extraCols) and $extraCols != "") {
                             if (is_string($extraCols)) {
                                 $extraColsExplode = explode(",", $extraCols);
 
                                 /**
                                  * Создание объединения
                                  */
-                                if ($unityCol != "") {
+                                if (isset($unityCol) and $unityCol != "") {
                                     array_push($extraColsExplode, "Группа");
                                 }
 
