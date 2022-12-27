@@ -152,7 +152,7 @@ div, p, h1, h2, h3, h4, h5, span, label, button {
 }
 
 .nav-link {
-	font-size: 18px!important;
+	/*font-size: 18px!important;*/
 	color: rgba(0, 0, 0, .6)!important;
 	border-bottom: 1px solid rgba(0, 0, 0, .0);
 }

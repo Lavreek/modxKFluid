@@ -1,286 +1,541 @@
 header {
-    align-items: center;
+    justify-content: space-between!important;
+    flex-wrap: wrap !important;
 }
 
-.logos {
+header .logos a {
+    display: block;
+    width: inherit;
+    height: inherit;
+
+    margin: 0;
+}
+
+header .logos a img {
+    width: inherit;
+    height: inherit;
+
+    margin: 0;
+    padding: 0;
+}
+
+header .collapse {
+    height: 100%;
+}
+
+header .links,
+header .contacts {
+    align-items: flex-end;
     display: flex;
-    min-height: 60px;
 }
 
-.logos a {
-    margin: auto;
+header .links {
+    margin-right: 1em;
 }
 
-.collapse-items {
-    display: flex;
-    justify-content: space-between;
-    align-content: center;
-    align-items: center;
-}
-
-.link-contacts {
-    font-family: 'Inter';
-    margin-top: 8px;
-    color: #0177A6!important;
+header .contacts {
     text-align: right;
-    font-style: normal;
-    font-weight: 400;
-    font-size: 18px;
-    line-height: 22px;
-    white-space: nowrap;
+    justify-content: space-between;
 }
 
-header .navbar-collapse .contacts {
-    display: flex;
+header .contacts .contacts-item {
+    text-decoration: none;
+}
+header .contacts a {
+    color: #0177A6 !important;
 }
 
+header .nav-link:hover {
+    filter: drop-shadow(0px 4px 6px rgba(1, 119, 166, 0.5))
+}
 
 @media (min-width: 1921px) {
     header {
-        justify-content: space-around!important;
+        width: 100%;
+        height: 7vw;
+        padding: 1vw 5vw !important;
     }
 
-    .nav-link {
-        font-size: 1.35vw!important;
+    header .collapse {
+        align-items: center;
+    }
+
+    header .links {
+        height: 100%;
+        align-items: center;
+    }
+
+    header .contacts {
+        text-align: right;
+        height: 100%;
+        align-items: flex-end;
+    }
+
+    header .logos {
+        height: 100px;
+    }
+
+    header .links a {
+        font-size: calc(1px + 1vw);
+        margin: 0 96px;
+    }
+
+    header .contacts a {
+        font-size: calc(1px + 1vw);
     }
 }
 
 @media (max-width: 1920px) {
     header {
-        padding-top: 1em;
-        padding-bottom: 1em;
     }
 
-    .collapse {
-        justify-content: end;
+    header .logos {
+        height: 90px;
     }
 
-    .nav-link {
-        font-family: 'Inter';
-        font-style: normal;
-        font-weight: 400;
+    header .links {
+        align-items: center;
+    }
+
+    header .links a {
+        font-size: 20px;
+        margin: 0 96px;
+    }
+
+    header .contacts a {
+        font-size: 20px;
+    }
+}
+
+@media (max-width: 1680px) {
+    header {
+    }
+
+    header .logos {
+        height: 85px;
+    }
+
+    header .links a {
+        font-size: 19px;
+        margin: 0 64px;
+    }
+
+    header .contacts a {
+        font-size: 19px;
+    }
+}
+
+@media (max-width: 1440px) {
+    header {
+    }
+
+    header .logos {
+        height: 70px;
+    }
+
+    header .links a {
         font-size: 18px;
-        line-height: 22px;
+        margin: 0 32px;
     }
 
-    .nav-link:hover {
-        filter: drop-shadow(0px 4px 6px rgba(1, 119, 166, 0.5))!important;
-    }
-
-    .contacts-item {
-        padding: 8px 16px!important;
-        text-align: right;
-    }
-
-    .header-logo {
-        width: 17.2vw;
-        min-width: 95px;
-        max-width: 330px;
-        max-height: 80px;
-
-        padding-bottom: 4px;
-    }
-
-    .nav li {
-        padding: 0 70px;
+    header .contacts a {
+        font-size: 18px;
     }
 }
 
-@media screen and (max-width: 1681px) {
-    .header-logo {
-        min-width: 330px;
+@media (max-width: 1280px) {
+    header .links a {
+        font-size: 17px;
+        margin: 0 16px;
     }
 
-    .nav li {
-        padding: 0 3vw;
-    }
-}
-
-@media screen and (max-width: 1441px) {
-    .header-logo {
-        width: 330px;
-    }
-
-    .nav li {
-        padding: 0 2vw;
+    header .contacts a {
+        font-size: 17px;
     }
 }
 
-@media screen and (max-width: 1281px) {
-    .header-logo {
-        width: 300px;
-    }
-
-    .nav li {
-        padding: 0 1vw;
-    }
-}
-
-@media screen and (max-width: 1141px) {
+@media (max-width: 1024px) {
     header {
-        align-items: end!important;
-    }
-    header .navbar-collapse {
-        align-items: end!important;
     }
 
-    .header-logo {
-        width: 270px;
+    header .logos {
+        height: 50px;
     }
 
-    .nav li {
-        padding: 0 0;
+    header .links a {
+        font-size: 16px;
+        margin: 0 8px;
+    }
+
+    header .contacts a {
+        font-size: 16px;
     }
 }
 
-@media screen and (max-width: 1025px) {
-    header {
-        justify-content: space-between!important;
-    }
-}
-
-@media screen and (max-width: 961px) {
-    .header-logo {
-        width: 28.13vw;
-        min-width: 190px;
-    }
-
-    .nav-link {
-        font-size: 1.5625vw!important;
-    }
-}
-
-@media screen and (max-width: 769px) {
-    .header-logo {
-        width: 190px;
-    }
-
-    .nav-link {
-        padding: 4px .5rem;
-        font-size: 15px!important;
-    }
-
-    .contacts-item {
-        padding: 0 0!important;
-    }
-
-    .link-contacts {
-        margin: 0;
-    }
-}
-
-@media screen and (max-width: 721px) {
-    .header-logo {
-        width: 170px;
-    }
-
-    .nav-link {
-        /*font-size: 13px!important;*/
-    }
-}
-
-@media (min-width: 576px) {
+@media (min-width: 769px) {
     header .btn-collapse {
-        display: none!important;
+        display: none;
     }
 
-    header .navbar-collapse .contacts {
-        display: block!important;
-    }
-}
-
-@media (max-width: 576px) {
-    header {
-        align-items: center!important;
+    header .collapse {
+        display: flex!important;
     }
 
-    header .navbar-collapse .links {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-
-    header .navbar-collapse .links ul {
-        display: block;
-        text-align: center;
-    }
-
-    header .navbar-collapse .contacts {
-        align-items: center;
-        justify-content: center;
-    }
-
-    header .navbar-collapse .contacts .contacts-item a {
-        text-align: center;
-    }
-
-    .header-logo {
-        width: 180px;
-    }
-
-    header .collapse-items .contacts-item a {
-        font-size: 16px!important;
-        margin-top: 0;
-        padding: 0 8px;
-    }
-
-    header .collapse-items .btn-collapse {
-        padding: 0 8px;
-    }
-
-    header .nav {
+    header .contacts {
         flex-direction: column;
     }
-    
-    header .nav li {
-        padding: 8px 0!important;
-        max-width: 200px;
-    }
-
-    header .nav-link {
-        padding: 8px 0;
-    }
-    .navbar-collapse {
-        padding-bottom: 1em;
-    }
 }
 
-@media (max-width: 426px) {
-    .header-logo {
-        width: 38vw;
-        min-width: 100px;
+@media (max-width: 768px) {
+    header {
+        flex-wrap: wrap;
     }
 
-    header .collapse-items .contacts-item {
-        padding: 8px 10px!important;
+    header .logos {
+        height: 50px;
     }
 
-    header .collapse-items .contacts-item a {
-        font-size: 12px!important;
-        padding: 0 4px;
+    header .links {
+        margin: 0;
+        margin-top: 20px;
+        display: inline-block;
+        flex-direction: row;
     }
 
-    header .nav-link {
-        font-size: 16px!important;
+    header .contacts {
+        display: inline-block;
+    }
+
+    header .contacts a {
+        display: inline-block;
+    }
+
+    header .links a {
+        display: inline-block;
+
+        font-size: 16px;
+        margin: 0 0;
+        margin-right: 32px;
+
+    }
+
+    header .contacts a {
+        font-size: 16px;
+    }
+
+    header .btn-collapse {
+        display: block;
+    }
+
+    header .collapse {
+        height: auto;
+    }
+
+    #nav-collapse.show,
+    .collapsing,
+    .collapse
+    {
+        display: block;
+        flex-direction: row;
+        justify-content: space-evenly;
+        align-items: center;
+        width: 100vw;
+    }
+
+    header .links, header .contacts {
+        height: 100%;
+    }
+
+    header .collapse-kz {
+    }
+
+    header .contacts {
+        flex-direction: column-reverse;
     }
 }
+/*header {*/
+/*    align-items: center;*/
+/*}*/
 
-@media (max-width: 376px) {
-    header .collapse-items .contacts-item {
-        padding: 2px 10px!important;
-    }
+/*.logos {*/
+/*    display: flex;*/
+/*    min-height: 60px;*/
+/*}*/
 
-    .header-logo {
-        width: 32vw;
-    }
-}
+/*.logos a {*/
+/*    margin: auto;*/
+/*}*/
 
-@media (max-width: 321px) {
-    header .collapse-items .contacts-item {
-        padding: 4px 8px!important;
-    }
+/*.collapse-items {*/
+/*    display: flex;*/
+/*    justify-content: space-between;*/
+/*    align-content: center;*/
+/*    align-items: center;*/
+/*}*/
 
-    header .collapse-items .btn-collapse {
-        padding: 0 4px;
-    }
-}
+/*.link-contacts {*/
+/*    font-family: 'Inter';*/
+/*    margin-top: 8px;*/
+/*    color: #0177A6!important;*/
+/*    text-align: right;*/
+/*    font-style: normal;*/
+/*    font-weight: 400;*/
+/*    font-size: 18px;*/
+/*    line-height: 22px;*/
+/*    white-space: nowrap;*/
+/*}*/
+
+/*header .navbar-collapse .contacts {*/
+/*    display: flex;*/
+/*}*/
+
+
+/*@media (min-width: 1921px) {*/
+/*    header {*/
+/*        justify-content: space-around!important;*/
+/*    }*/
+
+/*    .nav-link {*/
+/*        font-size: 1.35vw!important;*/
+/*    }*/
+/*}*/
+
+/*@media (max-width: 1920px) {*/
+/*    header {*/
+/*        padding-top: 1em;*/
+/*        padding-bottom: 1em;*/
+/*    }*/
+
+/*    .collapse {*/
+/*        justify-content: end;*/
+/*    }*/
+
+/*    .nav-link {*/
+/*        font-family: 'Inter';*/
+/*        font-style: normal;*/
+/*        font-weight: 400;*/
+/*        font-size: 18px;*/
+/*        line-height: 22px;*/
+/*    }*/
+
+/*    .nav-link:hover {*/
+/*        filter: drop-shadow(0px 4px 6px rgba(1, 119, 166, 0.5))!important;*/
+/*    }*/
+
+/*    .contacts-item {*/
+/*        padding: 8px 16px!important;*/
+/*        text-align: right;*/
+/*    }*/
+
+/*    .header-logo {*/
+/*        width: 17.2vw;*/
+/*        min-width: 95px;*/
+/*        max-width: 330px;*/
+/*        max-height: 80px;*/
+
+/*        padding-bottom: 4px;*/
+/*    }*/
+
+/*    .nav li {*/
+/*        padding: 0 70px;*/
+/*    }*/
+/*}*/
+
+/*@media screen and (max-width: 1681px) {*/
+/*    .header-logo {*/
+/*        min-width: 330px;*/
+/*    }*/
+
+/*    .nav li {*/
+/*        padding: 0 3vw;*/
+/*    }*/
+/*}*/
+
+/*@media screen and (max-width: 1441px) {*/
+/*    .header-logo {*/
+/*        width: 330px;*/
+/*    }*/
+
+/*    .nav li {*/
+/*        padding: 0 2vw;*/
+/*    }*/
+/*}*/
+
+/*@media screen and (max-width: 1281px) {*/
+/*    .header-logo {*/
+/*        width: 300px;*/
+/*    }*/
+
+/*    .nav li {*/
+/*        padding: 0 1vw;*/
+/*    }*/
+/*}*/
+
+/*@media screen and (max-width: 1141px) {*/
+/*    header {*/
+/*        align-items: end!important;*/
+/*    }*/
+/*    header .navbar-collapse {*/
+/*        align-items: end!important;*/
+/*    }*/
+
+/*    .header-logo {*/
+/*        width: 270px;*/
+/*    }*/
+
+/*    .nav li {*/
+/*        padding: 0 0;*/
+/*    }*/
+/*}*/
+
+/*@media screen and (max-width: 1025px) {*/
+/*    header {*/
+/*        justify-content: space-between!important;*/
+/*    }*/
+/*}*/
+
+/*@media screen and (max-width: 961px) {*/
+/*    .header-logo {*/
+/*        width: 28.13vw;*/
+/*        min-width: 190px;*/
+/*    }*/
+
+/*    .nav-link {*/
+/*        font-size: 1.5625vw!important;*/
+/*    }*/
+/*}*/
+
+/*@media screen and (max-width: 769px) {*/
+/*    .header-logo {*/
+/*        width: 190px;*/
+/*    }*/
+
+/*    .nav-link {*/
+/*        padding: 4px .5rem;*/
+/*        font-size: 15px!important;*/
+/*    }*/
+
+/*    .contacts-item {*/
+/*        padding: 0 0!important;*/
+/*    }*/
+
+/*    .link-contacts {*/
+/*        margin: 0;*/
+/*    }*/
+/*}*/
+
+/*@media screen and (max-width: 721px) {*/
+/*    .header-logo {*/
+/*        width: 170px;*/
+/*    }*/
+
+/*    .nav-link {*/
+/*        !*font-size: 13px!important;*!*/
+/*    }*/
+/*}*/
+
+/*@media (min-width: 577px) {*/
+/*    header .btn-collapse {*/
+/*        display: none!important;*/
+/*    }*/
+
+/*    header .collapse {*/
+/*        display: flex!important;*/
+/*    }*/
+/*}*/
+
+/*@media (max-width: 576px) {*/
+/*    header {*/
+/*        align-items: center!important;*/
+/*    }*/
+
+/*    header .navbar-collapse .links {*/
+/*        display: flex;*/
+/*        align-items: center;*/
+/*        justify-content: center;*/
+/*    }*/
+
+/*    header .navbar-collapse .links ul {*/
+/*        display: block;*/
+/*        text-align: center;*/
+/*    }*/
+
+/*    header .navbar-collapse .contacts {*/
+/*        align-items: center;*/
+/*        justify-content: center;*/
+/*    }*/
+
+/*    header .navbar-collapse .contacts .contacts-item a {*/
+/*        text-align: center;*/
+/*    }*/
+
+/*    .header-logo {*/
+/*        width: 180px;*/
+/*    }*/
+
+/*    header .collapse-items .contacts-item a {*/
+/*        font-size: 16px!important;*/
+/*        margin-top: 0;*/
+/*        padding: 0 8px;*/
+/*    }*/
+
+/*    header .collapse-items .btn-collapse {*/
+/*        padding: 0 8px;*/
+/*    }*/
+
+/*    header .nav {*/
+/*        flex-direction: column;*/
+/*    }*/
+/*    */
+/*    header .nav li {*/
+/*        padding: 8px 0!important;*/
+/*        max-width: 200px;*/
+/*    }*/
+
+/*    header .nav-link {*/
+/*        padding: 8px 0;*/
+/*    }*/
+/*    .navbar-collapse {*/
+/*        padding-bottom: 1em;*/
+/*    }*/
+/*}*/
+
+/*@media (max-width: 426px) {*/
+/*    .header-logo {*/
+/*        width: 38vw;*/
+/*        min-width: 100px;*/
+/*    }*/
+
+/*    header .collapse-items .contacts-item {*/
+/*        padding: 8px 10px!important;*/
+/*    }*/
+
+/*    header .collapse-items .contacts-item a {*/
+/*        font-size: 12px!important;*/
+/*        padding: 0 4px;*/
+/*    }*/
+
+/*    header .nav-link {*/
+/*        font-size: 16px!important;*/
+/*    }*/
+/*}*/
+
+/*@media (max-width: 376px) {*/
+/*    header .collapse-items .contacts-item {*/
+/*        padding: 2px 10px!important;*/
+/*    }*/
+
+/*    .header-logo {*/
+/*        width: 32vw;*/
+/*    }*/
+/*}*/
+
+/*@media (max-width: 321px) {*/
+/*    header .collapse-items .contacts-item {*/
+/*        padding: 4px 8px!important;*/
+/*    }*/
+
+/*    header .collapse-items .btn-collapse {*/
+/*        padding: 0 4px;*/
+/*    }*/
+/*}*/

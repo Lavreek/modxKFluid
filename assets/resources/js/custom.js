@@ -6,6 +6,7 @@ $('.card-question').on('click', function(event) {
 });
 
 $(document).ready(function () {
+
     // @Deprecated
     //
     // let winWidth = $(window).width();
@@ -38,18 +39,26 @@ $('.btn-collapse').on('click', function () {
     } else {
         $(this).addClass('img-collapsed');
 
+        let tY = 0;
+
+        if ($(window).width() > 576) {
+            tY = 50;
+        } else {
+            tY = 125;
+        }
+
         anime({
             targets: '.btn-collapse',
-            translateY: 125,
+            translateY: tY,
             easing: 'easeInOutExpo',
-            duration: 200
+            duration: 400
         });
 
         anime({
             targets: '.collapse-links',
             translateX: 50,
             easing: 'easeInOutExpo',
-            duration: 200
+            duration: 400
         });
 
         $('.btn-collapse-img').attr('src', '/assets/resources/images/header-collapse.svg');
