@@ -41,7 +41,7 @@ $('.btn-collapse').on('click', function () {
 
         let tY = 0;
 
-        if ($(window).width() > 576) {
+        if ($(window).width() >= 620) {
             tY = 50;
         } else {
             tY = 125;

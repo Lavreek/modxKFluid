@@ -216,7 +216,6 @@ header .nav-link:hover {
         font-size: 16px;
         margin: 0 0;
         margin-right: 32px;
-
     }
 
     header .contacts a {
@@ -253,6 +252,55 @@ header .nav-link:hover {
         flex-direction: column-reverse;
     }
 }
+
+@media (min-width: 621px) {
+    header .collapse-kz-sm {
+        display: none !important;
+    }
+}
+
+@media (max-width: 620px) {
+    header .links {
+        margin: 0;
+        display: block;
+    }
+
+    header .collapse-kz {
+        display: none !important;
+    }
+
+    header .collapse-kz-sm {
+        display: block;
+    }
+
+    header .links a {
+        width: 50%;
+        display: inherit;
+        text-align: center;
+        margin: auto;
+        padding: 1em 0;
+    }
+
+    header .contacts {
+        text-align: center;
+        display: block;
+    }
+
+    header .contacts .contacts-item {
+        display: block;
+        width: 50%;
+        padding: 1em 0;
+        margin: auto;
+
+    }
+}
+
+@media (max-width: 425px) {
+    header .logos {
+        height: 35px;
+    }
+}
+
 /*header {*/
 /*    align-items: center;*/
 /*}*/
