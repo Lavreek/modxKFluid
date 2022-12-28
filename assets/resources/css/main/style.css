@@ -35,9 +35,18 @@
 }
 
 @media (max-width: 425px) {
+    .container-productions .production-focus .production-header {
+        text-align: center;
+    }
+
     .production-info .production-header {
         all: unset;
         display: none;
+    }
+    .container-productions .production-info .production-description {
+        width: 300px;
+        padding: 0;
+        margin: auto;
     }
 }
 @media (min-width: 1141px) {

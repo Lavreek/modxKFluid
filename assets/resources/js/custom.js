@@ -51,7 +51,7 @@ $('.btn-collapse').on('click', function () {
             targets: '.btn-collapse',
             translateY: tY,
             easing: 'easeInOutExpo',
-            duration: 400
+            duration: 200
         });
 
         anime({

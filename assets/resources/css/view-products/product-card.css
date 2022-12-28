@@ -5,6 +5,11 @@
     row-gap: 20px;
 }
 
+.card-preview {
+    text-decoration: none;
+    margin-bottom: 2em;
+}
+
 .gr-5 {
     justify-content: space-between;
     grid-template-columns: repeat(5, auto);
@@ -92,5 +97,19 @@
 @media (max-width: 576px) {
     .product-card {
         width: 245px;
+    }
+}
+
+@media (max-width: 425px) {
+    .gr-5 {
+        grid-template-columns: 1fr;
+    }
+
+    .gr-5 .product-card {
+        width: unset;
+    }
+
+    .gr-5 .card-preview {
+        margin: auto;
     }
 }
