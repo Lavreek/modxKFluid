@@ -1,0 +1,67 @@
+header .logos a,
+footer .logos a {
+    display: block;
+    width: inherit;
+    height: inherit;
+
+    margin: 0;
+}
+
+header .logos a img,
+footer .logos a img {
+    margin: 0;
+    padding: 0;
+}
+
+@media (min-width: 1921px) {
+    header .logos,
+    footer .logos {
+        height: 100px;
+    }
+}
+
+@media (max-width: 1920px) {
+    header .logos,
+    footer .logos {
+        height: 90px;
+    }
+}
+@media (max-width: 1680px) {
+    header .logos,
+    footer .logos {
+        height: 85px;
+    }
+}
+
+@media (max-width: 1440px) {
+    header .logos,
+    footer .logos {
+        height: 70px;
+    }
+}
+
+@media (max-width: 1024px) {
+    header .logos,
+    footer .logos {
+        height: 50px;
+    }
+}
+
+@media (max-width: 768px) {
+    header .logos,
+    footer .logos {
+        height: 50px;
+    }
+}
+
+@media (max-width: 576px) {
+    footer .logos {
+        display: none;
+    }
+}
+
+@media (max-width: 425px) {
+    header .logos {
+        height: 35px;
+    }
+}

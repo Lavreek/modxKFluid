@@ -13,40 +13,42 @@
     <link rel="stylesheet" href="/assets/resources/css/view-products/product-text.css">
     <link rel="stylesheet" href="/assets/resources/css/view-products/product-card.css">
     <link rel="stylesheet" href="/assets/resources/css/view-products/product-table.css">
+    <link rel="stylesheet" href="/assets/resources/css/view-products/product-category-info.css">
+    <link rel="stylesheet" href="/assets/resources/css/view-products/product-info.css">
 </head>
 <body>
-[[$header]]
-[[$google_metrika]]
+    [[$header]]
+    [[$google_metrika]]
 
-<div class="product-container py-em-2">
-    <div class="py-em-2 px-em-2">
-        <div>
-            [[*pagetitle]]
+    <div class="product-container py-em-2">
+        <div class="py-em-2 px-em-2">
+            <div>
+                [[*pagetitle]]
+            </div>
+            <div>
+                [[*longtitle]]
+            </div>
+            <div>
+                [[*сonnection]]
+            </div>
+            <div>
+                [[*resource_image]]
+            </div>
+            <div>
+                [[*price]]
+            </div>
+            <div>
+                [[*resource_group]]
+            </div>
         </div>
-        <div>
-            [[*longtitle]]
-        </div>
-        <div>
-            [[*сonnection]]
-        </div>
-        <div>
-            [[*resource_image]]
-        </div>
-        <div>
-            [[*price]]
-        </div>
-        <div>
-            [[*resource_group]]
+        <div class="py-em-2">
+            [[!getParentTableContent]]
+            [[!climbHigher]]
         </div>
     </div>
-    <div class="py-em-2">
-        [[!getParentTableContent]]
-        [[!climbHigher]]
-    </div>
-</div>
 
-[[$scroll_top]]
-[[$base_scripts]]
-[[$footer]]
+    [[$scroll_top]]
+    [[$base_scripts]]
+    [[$footer]]
 </body>
 </html>

@@ -3,22 +3,6 @@ header {
     flex-wrap: wrap !important;
 }
 
-header .logos a {
-    display: block;
-    width: inherit;
-    height: inherit;
-
-    margin: 0;
-}
-
-header .logos a img {
-    width: inherit;
-    height: inherit;
-
-    margin: 0;
-    padding: 0;
-}
-
 header .collapse {
     height: 100%;
 }
@@ -41,6 +25,7 @@ header .contacts {
 header .contacts .contacts-item {
     text-decoration: none;
 }
+
 header .contacts a {
     color: #0177A6 !important;
 }
@@ -71,10 +56,6 @@ header .nav-link:hover {
         align-items: flex-end;
     }
 
-    header .logos {
-        height: 100px;
-    }
-
     header .links a {
         font-size: calc(1px + 1vw);
         margin: 0 96px;
@@ -86,13 +67,6 @@ header .nav-link:hover {
 }
 
 @media (max-width: 1920px) {
-    header {
-    }
-
-    header .logos {
-        height: 90px;
-    }
-
     header .links {
         align-items: center;
     }
@@ -108,13 +82,6 @@ header .nav-link:hover {
 }
 
 @media (max-width: 1680px) {
-    header {
-    }
-
-    header .logos {
-        height: 85px;
-    }
-
     header .links a {
         font-size: 19px;
         margin: 0 64px;
@@ -126,13 +93,6 @@ header .nav-link:hover {
 }
 
 @media (max-width: 1440px) {
-    header {
-    }
-
-    header .logos {
-        height: 70px;
-    }
-
     header .links a {
         font-size: 18px;
         margin: 0 32px;
@@ -155,13 +115,6 @@ header .nav-link:hover {
 }
 
 @media (max-width: 1024px) {
-    header {
-    }
-
-    header .logos {
-        height: 50px;
-    }
-
     header .links a {
         font-size: 16px;
         margin: 0 8px;
@@ -295,11 +248,7 @@ header .nav-link:hover {
     }
 }
 
-@media (max-width: 425px) {
-    header .logos {
-        height: 35px;
-    }
-}
+@media (max-width: 425px) { }
 
 /*header {*/
 /*    align-items: center;*/

@@ -1,0 +1,29 @@
+.p-category-block {
+    display: block;
+}
+
+.p-category-block .category-block-image {
+    max-width: 250px;
+    float: left;
+    margin: 2em;
+}
+
+.p-category-block .category-block-image img {
+    max-width: inherit;
+    width: inherit;
+    min-width: inherit;
+}
+
+@media (max-width: 425px) {
+    .p-category-block .category-block-image {
+        margin: 0 2em 2em 0;
+    }
+}
+
+@media (max-width: 325px) {
+    .p-category-block .category-block-image {
+        text-align: center;
+        float: unset;
+        margin: 0;
+    }
+}

@@ -27,8 +27,16 @@ global $modx;
      *     &groupCol=`Подсоединение:Подсоединение+Подсоединение дополнительно;`
      *
      * @var string $pageId Идентификатор ресурса, от которого происходит поиск продукции
+     * @var string $tableHeader Заголовок таблицы
      */
 
+    function echoDebug($name, $string, $array) {
+        if (isset($_GET['debug-snippet'])) {
+            echo "&$name: ";
+            var_dump($string, $array);
+            echo "<br><br>";
+        }
+    }
 
     function explodeVariable(&$string, &$array, $delimiter) {
         global $variableSearch;
@@ -73,7 +81,7 @@ global $modx;
             $pageId = $modx->resourceIdentifier;
         }
 
-        $selectResources = "SELECT `id`, `pagetitle`, `template` FROM `modx_site_content` WHERE `parent` = '$pageId' AND `template` in (" . implode(", ", $acceptedTemplates) . ") and `published` = '1'";
+        $selectResources = "SELECT $defaultHeaderColsString, `template` FROM `modx_site_content` WHERE `parent` = '$pageId' AND `template` in (" . implode(", ", $acceptedTemplates) . ") and `published` = '1'";
         $resources = $modx->query($selectResources);
 
         if (!is_bool($resources)) {
@@ -85,11 +93,7 @@ global $modx;
                     $extraArray = array_map('trim', explode(extraDelimiter, $extraCols));
                 }
 
-                if (isset($_GET['debug-snippet'])) {
-                    echo "&extraCols: ";
-                    var_dump($extraCols, $extraArray);
-                    echo "<br><br>";
-                }
+                echoDebug('extraCols', $extraCols, $extraArray);
 
                 if (isset($unityCol)) {
                     $unityArray = $unityValues = [];
@@ -97,24 +101,15 @@ global $modx;
                     explodeVariable($unityCol, $unityArray, uninyDelimiter);
                 }
 
-                if (isset($_GET['debug-snippet'])) {
-                    echo "&unityCol: ";
-                    var_dump($unityCol, $unityArray);
-                    echo "<br><br>";
-                }
+                echoDebug('unityCol', $unityCol, $unityArray);
 
                 $localeArray = ['id' => '#', 'pagetitle' => 'Кодировка'];
 
                 if (isset($localeCol)) {
-
                     explodeVariable($localeCol, $localeArray, localeDelimiter);
                 }
 
-                if (isset($_GET['debug-snippet'])) {
-                    echo "&localeCol: ";
-                    var_dump($localeCol, $localeArray);
-                    echo "<br><br>";
-                }
+                echoDebug('localeCol', $localeCol, $localeArray);
 
                 if (isset($groupCol)) {
                     $groupArray = [];
@@ -134,11 +129,7 @@ global $modx;
                     }
                 }
 
-                if (isset($_GET['debug-snippet'])) {
-                    echo "&groupCol: ";
-                    var_dump($groupCol, $groupArray);
-                    echo "<br><br>";
-                }
+                echoDebug('groupCol', $groupCol, $groupArray);
 
                 if ($resource['template'] == 3) {
                     unset($resources[$resourceIndex]['template']);
@@ -182,6 +173,7 @@ global $modx;
                 } elseif ($resource['template'] == 4) {
                     $categoryHeader = $defaultHeaderCols;
                     $categoryGroups = [];
+                    $groupRows = [];
 
                     $selectProduction = "SELECT $defaultHeaderColsString FROM `modx_site_content` WHERE `template` = '3' AND `published` = '1' AND `parent` = '{$resource['id']}'";
                     $productions = $modx->query($selectProduction);
@@ -225,111 +217,120 @@ global $modx;
                             }
                         }
                     }
+                }
 
-                    if (isset($unityArray)) {
-                        $unityTranslit = [];
-                        foreach ($unityArray as $unityIndex => $unityValue) {
-                            if (in_array($unityIndex, $localeArray)) {
-                                $unityKey = array_search($unityIndex, $localeArray);
-                                $unityValue = array_search($unityValue, $localeArray);
-                                $categoryGroups += [$unityValue => []];
-                                array_push($deleteCols, $unityValue);
-                                $unityTranslit += [$unityKey => $unityValue];
+                if (isset($unityArray)) {
+                    $unityTranslit = [];
+
+                    foreach ($unityArray as $unityIndex => $unityValue) {
+                        if (in_array($unityIndex, $localeArray)) {
+                            $unityKey = array_search($unityIndex, $localeArray);
+                            $unityValue = array_search($unityValue, $localeArray);
+                            $categoryGroups += [$unityValue => []];
+                            array_push($deleteCols, $unityValue);
+                            $unityTranslit += [$unityKey => $unityValue];
+                        }
+                    }
+
+                    $unityArray = $unityTranslit;
+                }
+
+                if (isset($groupArray)) {
+                    $groupTranslit = [];
+
+                    foreach ($groupArray as $groupIndex => $groupValue) {
+                        if (in_array($groupIndex, $localeArray)) {
+                            $groupKey = array_search($groupIndex, $localeArray);
+                            $groupValues = [];
+
+                            foreach ($groupValue as $gValue) {
+                                $value = array_search($gValue, $localeArray);
+
+                                if ($value != $groupKey) {
+                                    array_push($deleteCols, $value);
+                                }
+
+                                if ($value != "") {
+                                    array_push($groupValues, $value);
+                                }
+                            }
+                            $groupTranslit += [$groupKey => $groupValues];
+                        }
+                    }
+
+                    $groupArray = $groupTranslit;
+                }
+
+                echoDebug('deleteCols', "\$deleteCols", $deleteCols);
+
+                echoDebug('groupArray', "\$groupArray", $groupArray);
+
+                echoDebug('unityArray', "\$unityArray", $unityArray);
+
+                $thead = $theadSecondRow = $tbody = "";
+
+                if (isset($unityArray) or isset($groupArray)) {
+                    $groups = [];
+
+                    foreach ($productions as $product) {
+                        if (isset($product['resource_group'])) {
+                            if (!isset($groups[$product['resource_group']])) {
+                                $groups += [$product['resource_group'] => []];
+                            }
+
+                            if (!in_array($product, $groups[$product['resource_group']])) {
+                                array_push($groups[$product['resource_group']], $product);
                             }
                         }
 
-                        $groupTranslit = [];
-                        foreach ($groupArray as $groupIndex => $groupValue) {
-                            if (in_array($groupIndex, $localeArray)) {
-                                $groupKey = array_search($groupIndex, $localeArray);
-                                $groupValues = [];
-
-                                foreach ($groupValue as $gValue) {
-                                    $value = array_search($gValue, $localeArray);
-
-                                    if ($value != $groupKey) {
-                                        array_push($deleteCols, $value);
-                                    }
-
-                                    if ($value != "") {
-                                        array_push($groupValues, $value);
+                        foreach ($product as $rowCol => $rowValue) {
+                            if (isset($unityArray)) {
+                                if (isset($categoryGroups[$rowCol])) {
+                                    if (!in_array($rowValue, $categoryGroups[$rowCol])) {
+                                        array_push($categoryGroups[$rowCol], $rowValue);
                                     }
                                 }
-                                $groupTranslit += [$groupKey => $groupValues];
+                            } elseif (isset($groupRows) and !isset($unityArray)) {
+                                array_push($groups, $product);
                             }
                         }
-
-                        $groupArray = $groupTranslit;
-                        $unityArray = $unityTranslit;
                     }
 
-                    if (isset($_GET['debug-snippet'])) {
-                        echo "deleteCols: ";
-                        var_dump($deleteCols);
-                        echo "<br><br>";
-                    }
-
-                    if (isset($_GET['debug-snippet'])) {
-                        echo "groupArray: ";
-                        var_dump($groupArray);
-                        echo "<br><br>";
-                    }
-
-                    if (isset($_GET['debug-snippet'])) {
-                        echo "unityArray: ";
-                        var_dump($unityArray);
-                        echo "<br><br>";
-                    }
-
-                    $thead = $theadSecondRow = $tbody = "";
-
-                    if (isset($unityArray)) {
-                        $groups = [];
-
-                        foreach ($productions as $product) {
-                            if (isset($product['resource_group'])) {
-                                if (!isset($groups[$product['resource_group']])) {
-                                    $groups += [$product['resource_group'] => []];
-                                }
-
-                                if (!in_array($product, $groups[$product['resource_group']])) {
-                                    array_push($groups[$product['resource_group']], $product);
-                                }
-                            }
-                            foreach ($product as $rowCol => $rowValue) {
-                                if (isset($unityArray)) {
-                                    if (isset($categoryGroups[$rowCol])) {
-                                        if (!in_array($rowValue, $categoryGroups[$rowCol])) {
-                                            array_push($categoryGroups[$rowCol], $rowValue);
-                                        }
-                                    }
-                                }
-                            }
-                        }
-
+                    if (isset($unityArray) or isset($groupArray)) {
                         for ($i = 0; $i < count($groups); $i++) {
                             $row = [];
                             $group = current($groups);
 
-                            for ($j = 0; $j < count($group); $j++) {
-                                $groupMember = current($group);
+                            if (isset($unityArray)) {
+                                for ($j = 0; $j < count($group); $j++) {
+                                    $groupMember = current($group);
 
-                                foreach ($groupMember as $gmKey => $gmValue) {
-                                    if (is_array($row[$gmKey])) {
-                                        array_push($row[$gmKey], $gmValue);
-                                    }
-                                    if (!isset($row[$gmKey])) {
-                                        if (isset($unityArray[$gmKey])) {
-                                            $row[$gmKey] = [$gmValue];
-                                            continue;
+                                    foreach ($groupMember as $gmKey => $gmValue) {
+
+                                        if (is_array($row[$gmKey])) {
+                                            array_push($row[$gmKey], $gmValue);
                                         }
 
-                                        $row[$gmKey] = $gmValue;
+                                        if (!isset($row[$gmKey])) {
+                                            if (isset($unityArray[$gmKey])) {
+                                                $row[$gmKey] = [$gmValue];
+                                                continue;
+                                            }
+
+                                            $row[$gmKey] = $gmValue;
+                                        }
                                     }
+                                    next($group);
                                 }
 
-                                next($group);
+                            } elseif (isset($groupArray) and !isset($unityArray)) {
+                                foreach ($group as $gKey => $gValue) {
+                                    if (!isset($row[$gKey])) {
+                                        $row[$gKey] = $gValue;
+                                    }
+                                }
                             }
+
                             $tbody .= "<tr>";
 
                             foreach ($row as $rowCol => $rowValue) {
@@ -355,92 +356,90 @@ global $modx;
 
                             next($groups);
                         }
+                    }
 
+                } else {
+                    foreach ($productions as $product) {
+                        $tbody .= "<tr>";
+
+                        foreach ($product as $rowCol => $rowValue) {
+                            $tbody .= "<td>$rowValue</td>";
+                        }
+
+                        $tbody .= "</tr>";
+                    }
+                }
+
+                echoDebug('UnityParams', "\$categoryGroups", $categoryGroups);
+                echoDebug('localeArray', "\$localeArray", $localeArray);
+
+                $thead .= "<tr>";
+                $theadSecondRow .= "<tr>";
+
+                foreach (array_diff($categoryHeader, $deleteCols) as $colIndex => $colValue) {
+                    if (isset($groupArray) or isset($unityArray)) {
+                        $rowSpan = 2;
                     } else {
-                        foreach ($productions as $product) {
-                            $tbody .= "<tr>";
-
-                            foreach ($product as $rowCol => $rowValue) {
-                                $tbody .= "<td>$rowValue</td>";
-                            }
-
-                            $tbody .= "</tr>";
-                        }
+                        $rowSpan = 1;
                     }
 
-                    if (isset($_GET['debug-snippet'])) {
-                        echo "UnityParams: ";
-                        var_dump($categoryGroups);
-                        echo "<br><br>";
+                    $colSpan = 1;
 
-                        echo "&localeArray: ";
-                        var_dump($localeArray);
-                        echo "<br><br>";
-                    }
-
-                    $thead .= "<tr>";
-                    $theadSecondRow .= "<tr>";
-
-                    foreach (array_diff($categoryHeader, $deleteCols) as $colIndex => $colValue) {
-                        if (isset($groupArray) or isset($unityArray)) {
-                            $rowSpan = 2;
-                        } else {
+                    if (isset($unityArray)) {
+                        if (isset($unityArray[$colValue])) {
                             $rowSpan = 1;
-                        }
 
-                        $colSpan = 1;
+                            $colSpan = count($categoryGroups[$unityArray[$colValue]]);
 
-                        if (isset($unityArray)) {
-                            if (isset($unityArray[$colValue])) {
-                                $rowSpan = 1;
-
-                                $colSpan = count($categoryGroups[$unityArray[$colValue]]);
-
-                                foreach ($categoryGroups as $unityParam) {
-                                    foreach ($unityParam as $param) {
-                                        $theadSecondRow .= "<th scope='col'>" . $param . "</th>";
-                                    }
+                            foreach ($categoryGroups as $unityParam) {
+                                foreach ($unityParam as $param) {
+                                    $theadSecondRow .= "<th scope='col'>" . $param . "</th>";
                                 }
                             }
                         }
-
-                        if (isset($groupArray)) {
-                            if (isset($groupArray[$colValue])) {
-                                $rowSpan = 1;
-                                $colSpan = count($groupArray[$colValue]);
-
-                                for ($i = 0; $i < count($groupArray[$colValue]); $i++) {
-                                    $theadSecondRow .= "<th scope='col'></th>";
-                                }
-                            }
-                        }
-
-                        if (isset($localeArray[$colValue])) {
-                            $colValue = $localeArray[$colValue];
-                        }
-
-                        $thead .= "<th rowspan='$rowSpan' colspan='$colSpan' scope='col'>" . $colValue . "</th>";
                     }
 
-                    $thead .= "</tr>";
-                    $theadSecondRow .= "</tr>";
+                    if (isset($groupArray)) {
+                        if (isset($groupArray[$colValue])) {
+                            $rowSpan = 1;
+                            $colSpan = count($groupArray[$colValue]);
+
+                            for ($i = 0; $i < count($groupArray[$colValue]); $i++) {
+                                $theadSecondRow .= "<th scope='col'></th>";
+                            }
+                        }
+                    }
+
+                    if (isset($localeArray[$colValue])) {
+                        $colValue = $localeArray[$colValue];
+                    }
+
+                    $thead .= "<th rowspan='$rowSpan' colspan='$colSpan' scope='col'>" . $colValue . "</th>";
+                }
+
+                $thead .= "</tr>";
+                $theadSecondRow .= "</tr>";
+
+                if (!isset($tableHeader)) {
+                    $tableHeader = "";
 
                     if ($resource['template'] == 4) {
-                        echo "<h1>{$resource['pagetitle']}</h1>";
+                        $tableHeader = "<h1>{$resource['pagetitle']}</h1>";
                     }
-
-                    echo
-                    "<div class='product-table'>
-                        <table class='table' style='text-align: center'>
-                            <thead class='table-light' style='vertical-align: middle;'>
-                                $thead $theadSecondRow
-                            </thead>
-                            <tbody>
-                                $tbody
-                            </tbody>
-                        </table>
-                    </div>";
                 }
+
+                echo
+                "<div class='product-table'>
+                    $tableHeader
+                    <table class='table'>
+                        <thead class='table-light'>
+                            $thead $theadSecondRow
+                        </thead>
+                        <tbody>
+                            $tbody
+                        </tbody>
+                    </table>
+                </div>";
             }
 
             /**
@@ -467,15 +466,15 @@ global $modx;
 
                 echo
                 "<div class='product-table'>
-                        <table class='table' style='text-align: center'>
-                            <thead class='table-light' style='vertical-align: middle;'>
-                                $thead
-                            </thead>
-                            <tbody>
-                                $tbody
-                            </tbody>
-                        </table>
-                    </div>";
+                    <table class='table'>
+                        <thead class='table-light'>
+                            $thead
+                        </thead>
+                        <tbody>
+                            $tbody
+                        </tbody>
+                    </table>
+                </div>";
             }
         }
 
