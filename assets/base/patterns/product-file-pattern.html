@@ -6,13 +6,7 @@
 <script src="/assets/resources/js/pdfobject.js"></script>
 <script>PDFObject.embed("/[[*resource_filepath]]", "#example1");</script>
 <script>
-
-    // let width = $(window).width();
-    //
-    // if (width <= 1024) {
-    //     $('body').prepend('<object width="320" height="240" data="/[[*resource_filepath]]"></object>');
-    //     console.log(1);
-    // } else {
-    //     window.location.replace('/[[*resource_filepath]]');
-    // }
+    if ($(window).width() <= 1024) {
+        window.location.replace('/[[*resource_filepath]]');
+    }
 </script>
