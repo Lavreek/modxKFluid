@@ -1,10 +1,15 @@
 <?php
 global $modx;
 
+    /**
+     * @var array $acceptedTemplates Массив разрешённых шаблонов для отображения карточки
+     */
+    $acceptedTemplates = [2, 6];
+
 if (isset($modx->resourceIdentifier) and $modx->resourceIdentifier > 0) {
     $page_id = $modx->resourceIdentifier;
 
-    $selectChilds = "SELECT `id`, `pagetitle` FROM `modx_site_content` WHERE `parent` = '$page_id' AND `published` = '1' AND `template` = '2'";
+    $selectChilds = "SELECT `id`, `pagetitle` FROM `modx_site_content` WHERE `parent` = '$page_id' AND `published` = '1' AND `template` in (". implode(",", $acceptedTemplates) .")";
     $childs = $modx->query($selectChilds);
 
     if (!is_bool($childs)) {
