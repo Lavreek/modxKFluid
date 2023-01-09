@@ -3,11 +3,5 @@
     <div id="example1"></div>
 </body>
 <script src="/assets/resources/js/jquery-3.6.0.min.js"></script>
-<script>
-    if ($(window).width() <= 1024) {
-
-        window.location.replace('/[[*resource_filepath]]');
-    }
-</script>
 <script src="/assets/resources/js/pdfobject.js"></script>
 <script>PDFObject.embed("/[[*resource_filepath]]", "#example1");</script>

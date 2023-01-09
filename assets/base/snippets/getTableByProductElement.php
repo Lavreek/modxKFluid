@@ -152,8 +152,11 @@ global $modx;
 
                         if (!is_bool($extraParams)) {
                             foreach ($extraParams->fetchAll(PDO::FETCH_ASSOC) as $param) {
-
                                 if (!in_array($param['name'], $resource)) {
+                                    if ($param['name'] == "price" and $param['value'] == "0") {
+                                        $param['value'] = "";
+                                    }
+
                                     $resources[$resourceIndex] += [$param['name'] => $param['value']];
                                 }
 
@@ -202,6 +205,10 @@ global $modx;
                                 if (!is_bool($extraParams)) {
                                     foreach ($extraParams->fetchAll(PDO::FETCH_ASSOC) as $param) {
                                         if (!in_array($param['name'], $rowValue)) {
+                                            if ($param['name'] == "price" and $param['value'] == "0") {
+                                                $param['value'] = "";
+                                            }
+
                                             $productions[$rowIndex] += [$param['name'] => $param['value']];
                                         }
 

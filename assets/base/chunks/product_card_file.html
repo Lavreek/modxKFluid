@@ -1,14 +1,28 @@
-<a href="/[[+url]]" class="card-preview">
-  <div class="product-card" style="max-width: 265px;">
-    <div class="p-card-image">
-      <img src="[[+image]]" alt="">
+<a class="card-preview card-file-desktop" href="/[[~[[+id]]]]">
+    <div class="product-card">
+        <div class="p-card-image">
+            <img src="[[+image]]" alt="">
+        </div>
+        <div class="product-card-title">
+            <p>[[+pagetitle]]</p>
+        </div>
+        <div>
+            <hr>
+            <p>перейти в каталог</p>
+        </div>
     </div>
-    <div class="product-card-title">
-      <p>[[+pagetitle]]</p>
+</a>
+<a class="card-preview card-file-mobile" href="/[[+url]]">
+    <div class="product-card">
+        <div class="p-card-image">
+            <img src="[[+image]]" alt="">
+        </div>
+        <div class="product-card-title">
+            <p>[[+pagetitle]]</p>
+        </div>
+        <div>
+            <hr>
+            <p>перейти в каталог</p>
+        </div>
     </div>
-    <div>
-      <hr>
-      <p>перейти в каталог</p>
-    </div>
-  </div>
 </a>
